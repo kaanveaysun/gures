@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>⚡ KİM KAZANACAK | 5 MAÇ + UZATMA +2</title>
+    <title>⚡ KİM KAZANACAK | 2-2'DEN 3-2 | 5-0</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
@@ -270,26 +270,26 @@
     <div class="premium-header">
         <h1><i class="fas fa-trophy"></i> KİM KAZANACAK <i class="fas fa-bolt"></i></h1>
         <div class="winner-badge" id="matchCountDisplay">
-            <i class="fas fa-chart-simple"></i> MAÇ 0/5
+            <i class="fas fa-chart-simple"></i> MAÇ BAŞLIYOR
         </div>
     </div>
 
     <div class="vs-screen">
         <div class="player-box">
             <i class="fas fa-user"></i>
-            <div class="player-name" id="player1NameDisplay">1. SAVAŞÇI</div>
+            <div class="player-name" id="player1NameDisplay">KAAN</div>
             <div class="score-number" id="player1Score">0</div>
         </div>
         <div class="vs-badge"><i class="fas fa-skull-crossbones"></i> VS <i class="fas fa-dragon"></i></div>
         <div class="player-box">
             <i class="fas fa-user-friends"></i>
-            <div class="player-name" id="player2NameDisplay">2. SAVAŞÇI</div>
+            <div class="player-name" id="player2NameDisplay">ELISA</div>
             <div class="score-number" id="player2Score">0</div>
         </div>
     </div>
 
     <div class="match-status" id="matchStatus">
-        <i class="fas fa-clock"></i> 5 MAÇ + UZATMA (+2 PUAN)
+        <i class="fas fa-clock"></i> SADECE 2-2'DEN 3-2 veya 5-0 ile kazanılır!
     </div>
 
     <div class="score-control">
@@ -302,7 +302,7 @@
             <button class="premium-btn brother-btn" id="addPlayer2Btn"><i class="fas fa-user-friends"></i> +1 PUAN EKLE</button>
         </div>
         <div class="result-message" id="resultMsg">
-            <i class="fas fa-play"></i> Maç başladı! 5 maç sonunda beraberlik olursa UZATMA (+2) başlar!
+            <i class="fas fa-play"></i> Maç başladı!
         </div>
     </div>
 
@@ -372,12 +372,11 @@
     }
 
     // OYUN MANTIĞI
-    let player1Name = localStorage.getItem('player1Name') || '1. SAVAŞÇI';
-    let player2Name = localStorage.getItem('player2Name') || '2. SAVAŞÇI';
+    let player1Name = localStorage.getItem('player1Name') || 'KAAN';
+    let player2Name = localStorage.getItem('player2Name') || 'ELISA';
     let p1Score = 0, p2Score = 0;
     let matchWinner = null;
-    let overtime = false;  // Uzatma modu aktif mi?
-    let normalMatchCount = 0;  // Kaç normal maç oynandı (toplam puan/2 gibi değil, direkt her buton 1 puan)
+    let overtime = false;
 
     const p1NameSpan = document.getElementById('player1NameDisplay');
     const p2NameSpan = document.getElementById('player2NameDisplay');
@@ -395,6 +394,24 @@
     p1NameSpan.textContent = player1Name;
     p2NameSpan.textContent = player2Name;
 
+    // ÖNCEKİ SKORU TUT (2-2'den 3-2 kontrolü için)
+    let previousP1 = 0, previousP2 = 0;
+
+    // Kazanma kontrolü
+    function checkWinner(newP1, newP2, oldP1, oldP2) {
+        // 5-0 kontrolü (direkt kazanır)
+        if (newP1 === 5 && newP2 === 0) return 'p1';
+        if (newP1 === 0 && newP2 === 5) return 'p2';
+        
+        // 2-2'den 3-2 olma kontrolü (SADECE 2-2 iken atılan puanla 3-2 olursa)
+        if (oldP1 === 2 && oldP2 === 2) {
+            if (newP1 === 3 && newP2 === 2) return 'p1';
+            if (newP1 === 2 && newP2 === 3) return 'p2';
+        }
+        
+        return null;
+    }
+
     function updateButtonTexts() {
         const addValue = overtime ? 2 : 1;
         addP1.innerHTML = `<i class="fas fa-user"></i> ${player1Name} +${addValue} PUAN`;
@@ -406,82 +423,100 @@
         p1ScoreSpan.textContent = p1Score;
         p2ScoreSpan.textContent = p2Score;
         
-        const totalNormalPoints = p1Score + p2Score;
-        
-        // Normal 5 maç tamamlandı mı? (5 maç = toplam 5 puan)
-        if (!overtime && !matchWinner && totalNormalPoints >= 5) {
-            if (p1Score === p2Score) {
-                // BERABERLİK! UZATMA BAŞLIYOR
-                overtime = true;
-                matchStatusDiv.innerHTML = `<i class="fas fa-hourglass-half"></i> UZATMA! 5 maç sonunda beraberlik! +2 puan sistemi aktif! <i class="fas fa-hourglass-half"></i>`;
-                resultMsgDiv.innerHTML = `<i class="fas fa-exclamation-triangle"></i> UZATMA BAŞLADI! Her hamlede +2 puan eklenir. Kim öndeyse kazanır!`;
+        if (!matchWinner) {
+            if (!overtime) {
+                const totalPoints = p1Score + p2Score;
+                
+                // Normal modda kazanan kontrolü (5-0 veya 2-2'den 3-2)
+                const winner = checkWinner(p1Score, p2Score, previousP1, previousP2);
+                if (winner) {
+                    matchWinner = winner;
+                    const winnerName = matchWinner === 'p1' ? player1Name : player2Name;
+                    resultMsgDiv.innerHTML = `<i class="fas fa-trophy"></i> 🎉🎉🎉 ${winnerName} KAZANDI!!! 🎉🎉🎉<br>🏆 ${p1Score} - ${p2Score} İLE ZAFER! 🏆`;
+                    resultMsgDiv.classList.add('winner-message');
+                    matchStatusDiv.innerHTML = `<i class="fas fa-flag-checkered"></i> MAÇ BİTTİ! ${winnerName} KAZANDI! <i class="fas fa-flag-checkered"></i>`;
+                    matchCountDisplay.innerHTML = `<i class="fas fa-crown"></i> ŞAMPİYON ${winnerName} <i class="fas fa-crown"></i>`;
+                    addP1.disabled = true;
+                    addP2.disabled = true;
+                    startConfetti();
+                    updateButtonTexts();
+                    return;
+                }
+                
+                // 5 puana ulaşıldı mı? (Uzatma kontrolü)
+                if (totalPoints >= 5) {
+                    overtime = true;
+                    matchStatusDiv.innerHTML = `<i class="fas fa-hourglass-half"></i> UZATMA BAŞLADI! +2 PUAN SİSTEMİ! İlk farkı yaratan kazanır! <i class="fas fa-hourglass-half"></i>`;
+                    resultMsgDiv.innerHTML = `<i class="fas fa-exclamation-triangle"></i> UZATMA! Normal maçlar bitti (5 puan). Şimdi +2 puan sisteminde ilk farkı yaratan kazanır!`;
+                    updateButtonTexts();
+                    updateUI();
+                    return;
+                }
+                
+                // Normal maç devam ediyor
+                matchCountDisplay.innerHTML = `<i class="fas fa-chart-simple"></i> NORMAL MAÇ: ${totalPoints}/5`;
+                matchStatusDiv.innerHTML = `<i class="fas fa-clock"></i> SADECE 2-2'DEN 3-2 veya 5-0 ile kazanılır!`;
+                
+                let msg = "";
+                if (p1Score === p2Score) {
+                    msg = `⚖️ BERABERE! ${player1Name} ${p1Score} - ${p2Score} ${player2Name}`;
+                    if (p1Score === 2 && p2Score === 2) {
+                        msg += ` ⚡ SON HAMLE! 3-2 yaparsan KAZANIRSIN! ⚡`;
+                    }
+                } else if (p1Score > p2Score) {
+                    msg = `🔥 ${player1Name} ÖNDE! (${p1Score} - ${p2Score})`;
+                    if (p1Score === 3 && p2Score === 1) {
+                        msg += ` ⚠️ 3-1! 3-2 olursa BİTMEZ! Sadece 2-2'den 3-2 bitirir! ⚠️`;
+                    }
+                } else {
+                    msg = `😤 ${player2Name} ÖNDE! (${p1Score} - ${p2Score})`;
+                    if (p2Score === 3 && p1Score === 1) {
+                        msg += ` ⚠️ 3-1! 3-2 olursa BİTMEZ! Sadece 2-2'den 3-2 bitirir! ⚠️`;
+                    }
+                }
+                
+                if (totalPoints === 4 && p1Score !== p2Score) {
+                    msg += ` ⚡ SON MAÇ! Beraberlik olursa uzatma! ⚡`;
+                }
+                resultMsgDiv.innerHTML = `<i class="fas fa-futbol"></i> ${msg}`;
+                resultMsgDiv.classList.remove('winner-message');
                 updateButtonTexts();
-                updateUI(); // tekrar çağır ki butonlar güncellensin
                 return;
-            } else {
-                // Normalde 5 maç sonunda fark varsa KAZANAN VAR
-                matchWinner = p1Score > p2Score ? 'p1' : 'p2';
-                const winnerName = matchWinner === 'p1' ? player1Name : player2Name;
-                resultMsgDiv.innerHTML = `<i class="fas fa-trophy"></i> 🎉🎉🎉 ${winnerName} KAZANDI!!! 🎉🎉🎉<br>🏆 ${p1Score} - ${p2Score} İLE ZAFER! 🏆`;
-                resultMsgDiv.classList.add('winner-message');
-                matchStatusDiv.innerHTML = `<i class="fas fa-flag-checkered"></i> MAÇ BİTTİ! ${winnerName} KAZANDI! <i class="fas fa-flag-checkered"></i>`;
-                matchCountDisplay.innerHTML = `<i class="fas fa-crown"></i> ŞAMPİYON ${winnerName} <i class="fas fa-crown"></i>`;
-                addP1.disabled = true;
-                addP2.disabled = true;
-                startConfetti();
-                return;
-            }
-        }
-        
-        // UZATMA MODU KONTROLÜ
-        if (overtime && !matchWinner) {
-            if (p1Score !== p2Score) {
-                // Uzatmada kim öndeyse kazanır
-                matchWinner = p1Score > p2Score ? 'p1' : 'p2';
-                const winnerName = matchWinner === 'p1' ? player1Name : player2Name;
-                resultMsgDiv.innerHTML = `<i class="fas fa-trophy"></i> 🎉🎉🎉 UZATMA SONUCU ${winnerName} KAZANDI!!! 🎉🎉🎉<br>🏆 ${p1Score} - ${p2Score} İLE ZAFER! 🏆`;
-                resultMsgDiv.classList.add('winner-message');
-                matchStatusDiv.innerHTML = `<i class="fas fa-flag-checkered"></i> UZATMA BİTTİ! ${winnerName} KAZANDI! <i class="fas fa-flag-checkered"></i>`;
-                matchCountDisplay.innerHTML = `<i class="fas fa-crown"></i> UZATMA ŞAMPİYONU ${winnerName} <i class="fas fa-crown"></i>`;
-                addP1.disabled = true;
-                addP2.disabled = true;
-                startConfetti();
-                return;
-            } else {
-                // Uzatmada hala beraberlik
-                matchStatusDiv.innerHTML = `<i class="fas fa-hourglass-half"></i> UZATMA DEVAM EDİYOR! (${p1Score}-${p2Score}) İlk farkı yaratan kazanır! +2 puan <i class="fas fa-hourglass-half"></i>`;
-                resultMsgDiv.innerHTML = `<i class="fas fa-futbol"></i> UZATMA! Beraberlik bozulana kadar devam. Her hamle +2 puan!`;
-                matchCountDisplay.innerHTML = `<i class="fas fa-chart-simple"></i> UZATMA SKORU: ${p1Score} - ${p2Score}`;
-            }
-        }
-        
-        // Normal maç modu (5 maç tamamlanmadı)
-        if (!overtime && !matchWinner) {
-            const remaining = 5 - (p1Score + p2Score);
-            matchCountDisplay.innerHTML = `<i class="fas fa-chart-simple"></i> NORMAL MAÇ: ${p1Score + p2Score}/5`;
-            matchStatusDiv.innerHTML = `<i class="fas fa-clock"></i> ${remaining} maç kaldı. Beraberlik olursa UZATMA (+2) başlar!`;
-            
-            let msg = "";
-            if (p1Score === p2Score) {
-                msg = `⚖️ BERABERE! ${player1Name} ${p1Score} - ${p2Score} ${player2Name}`;
-            } else if (p1Score > p2Score) {
-                msg = `🔥 ${player1Name} ÖNDE! (${p1Score} - ${p2Score}) Geri dönüş mümkün!`;
-            } else {
-                msg = `😤 ${player2Name} ÖNDE! (${p1Score} - ${p2Score}) Sen de toparlanabilirsin!`;
             }
             
-            if (p1Score + p2Score === 4) {
-                msg += ` ⚡ SON MAÇ! Beraberlik olursa uzatma! ⚡`;
+            // UZATMA MODU: Fark oluştu mu kontrol et
+            if (overtime && !matchWinner) {
+                if (p1Score !== p2Score) {
+                    matchWinner = p1Score > p2Score ? 'p1' : 'p2';
+                    const winnerName = matchWinner === 'p1' ? player1Name : player2Name;
+                    resultMsgDiv.innerHTML = `<i class="fas fa-trophy"></i> 🎉🎉🎉 UZATMA SONUCU ${winnerName} KAZANDI!!! 🎉🎉🎉<br>🏆 ${p1Score} - ${p2Score} İLE ZAFER! 🏆`;
+                    resultMsgDiv.classList.add('winner-message');
+                    matchStatusDiv.innerHTML = `<i class="fas fa-flag-checkered"></i> UZATMA BİTTİ! ${winnerName} KAZANDI! <i class="fas fa-flag-checkered"></i>`;
+                    matchCountDisplay.innerHTML = `<i class="fas fa-crown"></i> UZATMA ŞAMPİYONU ${winnerName} <i class="fas fa-crown"></i>`;
+                    addP1.disabled = true;
+                    addP2.disabled = true;
+                    startConfetti();
+                    updateButtonTexts();
+                    return;
+                } else {
+                    matchStatusDiv.innerHTML = `<i class="fas fa-hourglass-half"></i> UZATMA DEVAM EDİYOR! (${p1Score}-${p2Score}) İlk farkı yaratan kazanır! +2 PUAN <i class="fas fa-hourglass-half"></i>`;
+                    resultMsgDiv.innerHTML = `<i class="fas fa-futbol"></i> UZATMA! Beraberlik bozulana kadar devam. Her hamle +2 puan!`;
+                    matchCountDisplay.innerHTML = `<i class="fas fa-chart-simple"></i> UZATMA SKORU: ${p1Score} - ${p2Score}`;
+                    resultMsgDiv.classList.remove('winner-message');
+                    updateButtonTexts();
+                    return;
+                }
             }
-            resultMsgDiv.innerHTML = `<i class="fas fa-futbol"></i> ${msg}`;
-            resultMsgDiv.classList.remove('winner-message');
         }
-        
         updateButtonTexts();
     }
 
     function addScore(player) {
         if (matchWinner) return;
+        
+        // Önceki skoru kaydet (2-2 kontrolü için)
+        previousP1 = p1Score;
+        previousP2 = p2Score;
         
         const addAmount = overtime ? 2 : 1;
         
@@ -499,15 +534,17 @@
 
     function resetMatch() {
         p1Score = 0; p2Score = 0;
+        previousP1 = 0; previousP2 = 0;
         matchWinner = null;
         overtime = false;
         addP1.disabled = false;
         addP2.disabled = false;
         resultMsgDiv.classList.remove('winner-message');
         updateUI();
-        resultMsgDiv.innerHTML = `<i class="fas fa-play"></i> Maç sıfırlandı! Yeni mücadele başlıyor. 5 maç + uzatma kuralı aktif!`;
-        matchStatusDiv.innerHTML = `<i class="fas fa-clock"></i> 5 MAÇ + UZATMA (+2 PUAN)`;
+        resultMsgDiv.innerHTML = `<i class="fas fa-play"></i> Maç sıfırlandı! Yeni mücadele başlıyor. SADECE 2-2'DEN 3-2 veya 5-0 ile kazanılır!`;
+        matchStatusDiv.innerHTML = `<i class="fas fa-clock"></i> SADECE 2-2'DEN 3-2 veya 5-0 ile kazanılır!`;
         if (animationId) { cancelAnimationFrame(animationId); animationId = null; ctx.clearRect(0, 0, canvas.width, canvas.height); }
+        updateButtonTexts();
     }
 
     resetBtn.addEventListener('click', resetMatch);
