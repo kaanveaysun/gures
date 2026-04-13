@@ -41,7 +41,7 @@
             border-radius: 72px;
             border: 1px solid rgba(255, 215, 0, 0.35);
             padding: 45px 35px;
-            box-shadow: 0 35px 60px rgba(0, 0, 0, 0.5), 0 0 0 0.5px rgba(255, 215, 0, 0.2) inset;
+            box-shadow: 0 35px 60px rgba(0, 0, 0, 0.5);
         }
 
         .premium-header {
@@ -51,28 +51,23 @@
 
         .premium-header h1 {
             font-family: 'Orbitron', monospace;
-            font-size: 2.2rem;
-            font-weight: 800;
+            font-size: 2rem;
             background: linear-gradient(135deg, #FFE6B0, #FFB347, #FF8C00);
             background-clip: text;
             -webkit-background-clip: text;
             color: transparent;
-            letter-spacing: 2px;
         }
 
         .premium-badge {
             display: inline-flex;
             align-items: center;
             gap: 10px;
-            background: linear-gradient(135deg, rgba(255,200,0,0.2), rgba(255,100,0,0.1));
+            background: rgba(255,200,0,0.15);
             border-radius: 100px;
             padding: 8px 24px;
-            font-size: 0.8rem;
-            font-weight: 600;
+            font-size: 0.75rem;
             color: #FFE5A3;
-            border: 0.5px solid rgba(255, 215, 0, 0.5);
             margin-top: 15px;
-            backdrop-filter: blur(5px);
         }
 
         .player-card {
@@ -81,7 +76,7 @@
             padding: 28px;
             margin-bottom: 28px;
             border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.3s;
+            transition: 0.3s;
         }
 
         .player-card:hover {
@@ -90,7 +85,7 @@
         }
 
         .player-icon {
-            font-size: 2rem;
+            font-size: 1.8rem;
             margin-bottom: 12px;
             display: flex;
             align-items: center;
@@ -108,16 +103,14 @@
             font-size: 1rem;
             font-weight: 600;
             color: #FFD966;
-            letter-spacing: 1px;
         }
 
         .player-label {
             font-weight: 600;
             color: #B8C7FF;
             margin-bottom: 15px;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             letter-spacing: 1.5px;
-            text-transform: uppercase;
         }
 
         input {
@@ -125,13 +118,12 @@
             background: #0C1122;
             border: 2px solid rgba(255, 200, 100, 0.4);
             border-radius: 60px;
-            padding: 18px 24px;
-            font-size: 1.1rem;
+            padding: 16px 22px;
+            font-size: 1rem;
             font-weight: 500;
             color: #F5F0E0;
             outline: none;
             font-family: 'Inter', monospace;
-            transition: 0.2s;
         }
 
         input:focus {
@@ -142,10 +134,10 @@
         .premium-btn {
             background: linear-gradient(95deg, #F7B42C, #FC575E);
             border: none;
-            padding: 18px 28px;
+            padding: 16px 24px;
             border-radius: 100px;
             font-weight: 800;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             color: #0A0E1C;
             width: 100%;
             cursor: pointer;
@@ -156,11 +148,6 @@
             align-items: center;
             justify-content: center;
             gap: 12px;
-            letter-spacing: 1px;
-        }
-
-        .premium-btn i {
-            font-size: 1.3rem;
         }
 
         .premium-btn:active {
@@ -169,9 +156,9 @@
 
         .info-text {
             text-align: center;
-            margin-top: 28px;
+            margin-top: 25px;
             color: #FFD966AA;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -180,7 +167,7 @@
 
         @media (max-width: 550px) {
             .container { padding: 30px 20px; }
-            .premium-header h1 { font-size: 1.5rem; }
+            .premium-header h1 { font-size: 1.4rem; }
             .player-card { padding: 20px; }
         }
     </style>
@@ -190,35 +177,33 @@
         <div class="premium-header">
             <h1><i class="fas fa-crown"></i> KİM KAZANACAK <i class="fas fa-fire"></i></h1>
             <div class="premium-badge">
-                <i class="fas fa-gamepad"></i> 3-2 VEYA 5-0 İLE ZAFER <i class="fas fa-chart-line"></i>
+                <i class="fas fa-gamepad"></i> 5 MAÇ | UZATMA +2 <i class="fas fa-chart-line"></i>
             </div>
         </div>
 
-        <!-- 1. SAVAŞÇI -->
         <div class="player-card">
             <div class="player-icon">
                 <i class="fas fa-user"></i>
                 <span>1. SAVAŞÇI</span>
             </div>
             <div class="player-label"><i class="fas fa-tag"></i> İSİM</div>
-            <input type="text" id="player1Name" placeholder="Örnek: MERT, AYŞE, CAN..." value="MERT">
+            <input type="text" id="player1Name" placeholder="Örnek: MERT, AYŞE..." value="MERT">
         </div>
 
-        <!-- 2. SAVAŞÇI -->
         <div class="player-card">
             <div class="player-icon">
                 <i class="fas fa-user-friends"></i>
                 <span>2. SAVAŞÇI</span>
             </div>
             <div class="player-label"><i class="fas fa-tag"></i> İSİM</div>
-            <input type="text" id="player2Name" placeholder="Örnek: ZEYNEP, ELA, KARDEŞ..." value="ZEYNEP">
+            <input type="text" id="player2Name" placeholder="Örnek: ZEYNEP, ELA..." value="ZEYNEP">
         </div>
 
         <button class="premium-btn" id="startMatchBtn">
             <i class="fas fa-fist-raised"></i> ARENAYA GİR <i class="fas fa-arrow-right"></i>
         </button>
         <div class="info-text">
-            <i class="fas fa-info-circle"></i> KURAL: SADECE 3-2 VEYA 5-0 İLE KAZANILIR! Diğer skorlarda maç devam eder.
+            <i class="fas fa-info-circle"></i> 5 maç sonunda beraberlik olursa UZATMA (+2 puan). Kim öndeyse o kazanır.
         </div>
     </div>
 

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>⚡ KİM KAZANACAK | 3-2 / 5-0 KURALI</title>
+    <title>⚡ KİM KAZANACAK | 5 MAÇ + UZATMA +2</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
@@ -55,8 +55,7 @@
 
         .premium-header h1 {
             font-family: 'Orbitron', monospace;
-            font-size: 2rem;
-            font-weight: 800;
+            font-size: 1.8rem;
             background: linear-gradient(135deg, #FFE6B0, #FFB347, #FF6B00);
             background-clip: text;
             -webkit-background-clip: text;
@@ -67,10 +66,10 @@
             display: inline-flex;
             align-items: center;
             gap: 12px;
-            background: linear-gradient(95deg, rgba(255,215,0,0.25), rgba(255,100,0,0.2));
+            background: rgba(255,215,0,0.2);
             border-radius: 100px;
-            padding: 10px 28px;
-            font-size: 0.9rem;
+            padding: 8px 24px;
+            font-size: 0.85rem;
             font-weight: bold;
             color: #FFE5A3;
             margin-top: 15px;
@@ -92,30 +91,29 @@
             text-align: center;
             background: linear-gradient(145deg, rgba(5, 10, 22, 0.8), rgba(0, 0, 0, 0.6));
             border-radius: 60px;
-            padding: 28px 16px;
+            padding: 25px 16px;
             border: 1px solid rgba(255, 200, 100, 0.3);
-            transition: all 0.2s;
         }
 
         .player-box i {
-            font-size: 2.5rem;
+            font-size: 2.2rem;
             color: #FFD966;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
         }
 
         .player-name {
-            font-size: 1.7rem;
+            font-size: 1.5rem;
             font-weight: 800;
             font-family: 'Orbitron', monospace;
             background: linear-gradient(120deg, #FFFFFF, #FFD89A);
             background-clip: text;
             -webkit-background-clip: text;
             color: transparent;
-            margin-bottom: 18px;
+            margin-bottom: 15px;
         }
 
         .score-number {
-            font-size: 4.5rem;
+            font-size: 4rem;
             font-weight: 900;
             font-family: 'Orbitron', monospace;
             color: #FFE6A3;
@@ -123,7 +121,7 @@
         }
 
         .vs-badge {
-            font-size: 2.5rem;
+            font-size: 2rem;
             font-weight: 900;
             background: linear-gradient(145deg, #FFB347, #FF5500);
             background-clip: text;
@@ -135,20 +133,21 @@
             text-align: center;
             background: rgba(0,0,0,0.55);
             border-radius: 50px;
-            padding: 14px;
+            padding: 12px;
             margin-bottom: 25px;
-            font-weight: 700;
+            font-weight: 600;
             color: #FFE0A0;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 12px;
+            gap: 10px;
+            font-size: 0.9rem;
         }
 
         .score-control {
             background: linear-gradient(125deg, rgba(20, 28, 45, 0.9), rgba(10, 15, 28, 0.95));
             border-radius: 60px;
-            padding: 30px 25px;
+            padding: 25px 22px;
             margin-bottom: 35px;
             border: 1px solid rgba(255, 180, 50, 0.3);
         }
@@ -156,10 +155,24 @@
         .section-title {
             text-align: center;
             color: #FFE0A3;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
             font-weight: 700;
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-family: 'Orbitron', monospace;
+        }
+
+        .add-value-badge {
+            text-align: center;
+            background: rgba(255,200,0,0.2);
+            border-radius: 40px;
+            padding: 6px 12px;
+            margin-bottom: 20px;
+            display: inline-block;
+            width: auto;
+            margin-left: auto;
+            margin-right: auto;
+            font-size: 0.8rem;
+            color: #FFD966;
         }
 
         .dual-buttons {
@@ -172,10 +185,10 @@
             flex: 1;
             background: linear-gradient(95deg, #F7B42C, #FC575E);
             border: none;
-            padding: 20px 18px;
+            padding: 18px 16px;
             border-radius: 100px;
             font-weight: 800;
-            font-size: 1rem;
+            font-size: 0.95rem;
             color: #0A0E1C;
             cursor: pointer;
             transition: 0.2s;
@@ -183,7 +196,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 12px;
+            gap: 10px;
         }
 
         .brother-btn {
@@ -197,44 +210,44 @@
         .result-message {
             background: #00000066;
             border-radius: 50px;
-            padding: 18px;
+            padding: 16px;
             text-align: center;
-            font-weight: 700;
-            font-size: 1rem;
+            font-weight: 600;
+            font-size: 0.9rem;
             color: #FFECB3;
             margin-top: 25px;
-            border-left: 6px solid #FFB347;
+            border-left: 5px solid #FFB347;
         }
 
         .winner-message {
             background: linear-gradient(95deg, #FFD700, #FF8C00);
             color: #1e1a0a;
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             font-weight: 900;
             animation: winnerGlow 0.4s ease;
         }
 
         @keyframes winnerGlow {
-            0% { transform: scale(1); }
+            0%, 100% { transform: scale(1); }
             50% { transform: scale(1.02); }
-            100% { transform: scale(1); }
         }
 
         .reset-btn, .back-btn {
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 14px 22px;
+            padding: 12px 20px;
             border-radius: 100px;
-            font-weight: 600;
+            font-weight: 500;
             color: #ffcd94;
-            margin-top: 14px;
+            margin-top: 12px;
             cursor: pointer;
             width: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
+            gap: 8px;
             transition: 0.2s;
+            font-size: 0.85rem;
         }
 
         .reset-btn:hover, .back-btn:hover {
@@ -245,9 +258,9 @@
             .score-card { padding: 25px 18px; }
             .vs-screen { flex-direction: column; }
             .vs-badge { transform: rotate(90deg); }
-            .player-name { font-size: 1.3rem; }
-            .score-number { font-size: 3rem; }
-            .premium-btn { font-size: 0.8rem; padding: 14px; }
+            .player-name { font-size: 1.2rem; }
+            .score-number { font-size: 2.8rem; }
+            .premium-btn { font-size: 0.75rem; padding: 12px; }
         }
     </style>
 </head>
@@ -257,7 +270,7 @@
     <div class="premium-header">
         <h1><i class="fas fa-trophy"></i> KİM KAZANACAK <i class="fas fa-bolt"></i></h1>
         <div class="winner-badge" id="matchCountDisplay">
-            <i class="fas fa-chart-simple"></i> MAÇ 0/?
+            <i class="fas fa-chart-simple"></i> MAÇ 0/5
         </div>
     </div>
 
@@ -276,17 +289,20 @@
     </div>
 
     <div class="match-status" id="matchStatus">
-        <i class="fas fa-clock"></i> KURAL: SADECE 3-2 VEYA 5-0 İLE KAZANILIR!
+        <i class="fas fa-clock"></i> 5 MAÇ + UZATMA (+2 PUAN)
     </div>
 
     <div class="score-control">
-        <div class="section-title"><i class="fas fa-plus-circle"></i> PUAN EKLE (1'ER 1'ER) <i class="fas fa-fist-raised"></i></div>
+        <div class="section-title"><i class="fas fa-plus-circle"></i> PUAN EKLE</div>
+        <div style="text-align: center; margin-bottom: 15px;">
+            <span class="add-value-badge" id="addValueBadge"><i class="fas fa-info-circle"></i> NORMAL: +1 | UZATMA: +2</span>
+        </div>
         <div class="dual-buttons">
             <button class="premium-btn" id="addPlayer1Btn"><i class="fas fa-user"></i> +1 PUAN EKLE</button>
             <button class="premium-btn brother-btn" id="addPlayer2Btn"><i class="fas fa-user-friends"></i> +1 PUAN EKLE</button>
         </div>
         <div class="result-message" id="resultMsg">
-            <i class="fas fa-play"></i> Maç başladı! Her hamlede 1 puan eklenir. 3-2 veya 5-0 ile kazanılır!
+            <i class="fas fa-play"></i> Maç başladı! 5 maç sonunda beraberlik olursa UZATMA (+2) başlar!
         </div>
     </div>
 
@@ -308,13 +324,13 @@
     class Particle {
         constructor(x, y, color) {
             this.x = x; this.y = y; this.color = color;
-            this.size = Math.random() * 9 + 5;
-            this.speedX = (Math.random() - 0.5) * 14;
-            this.speedY = Math.random() * 12 + 6;
+            this.size = Math.random() * 8 + 4;
+            this.speedX = (Math.random() - 0.5) * 12;
+            this.speedY = Math.random() * 10 + 5;
             this.gravity = 0.28;
             this.friction = 0.98;
             this.rotation = Math.random() * 360;
-            this.rotSpeed = (Math.random() - 0.5) * 12;
+            this.rotSpeed = (Math.random() - 0.5) * 10;
         }
         update() {
             this.speedX *= this.friction;
@@ -336,8 +352,8 @@
     function startConfetti() {
         if (animationId) cancelAnimationFrame(animationId);
         particles = [];
-        const colors = ['#FFD700', '#FFA500', '#FF6347', '#FF69B4', '#00CED1', '#32CD32', '#FF4500', '#FFDAB9', '#FFE4B5'];
-        for (let i = 0; i < 220; i++) {
+        const colors = ['#FFD700', '#FFA500', '#FF6347', '#FF69B4', '#00CED1', '#32CD32', '#FF4500', '#FFDAB9'];
+        for (let i = 0; i < 200; i++) {
             const x = Math.random() * canvas.width;
             const y = Math.random() * canvas.height - canvas.height;
             const color = colors[Math.floor(Math.random() * colors.length)];
@@ -352,7 +368,7 @@
             else { cancelAnimationFrame(animationId); animationId = null; ctx.clearRect(0, 0, canvas.width, canvas.height); }
         }
         animate();
-        setTimeout(() => { if (animationId) { cancelAnimationFrame(animationId); animationId = null; ctx.clearRect(0, 0, canvas.width, canvas.height); } }, 4500);
+        setTimeout(() => { if (animationId) { cancelAnimationFrame(animationId); animationId = null; ctx.clearRect(0, 0, canvas.width, canvas.height); } }, 4000);
     }
 
     // OYUN MANTIĞI
@@ -360,6 +376,8 @@
     let player2Name = localStorage.getItem('player2Name') || '2. SAVAŞÇI';
     let p1Score = 0, p2Score = 0;
     let matchWinner = null;
+    let overtime = false;  // Uzatma modu aktif mi?
+    let normalMatchCount = 0;  // Kaç normal maç oynandı (toplam puan/2 gibi değil, direkt her buton 1 puan)
 
     const p1NameSpan = document.getElementById('player1NameDisplay');
     const p2NameSpan = document.getElementById('player2NameDisplay');
@@ -372,79 +390,107 @@
     const resultMsgDiv = document.getElementById('resultMsg');
     const matchCountDisplay = document.getElementById('matchCountDisplay');
     const matchStatusDiv = document.getElementById('matchStatus');
+    const addValueBadge = document.getElementById('addValueBadge');
 
     p1NameSpan.textContent = player1Name;
     p2NameSpan.textContent = player2Name;
-    addP1.innerHTML = `<i class="fas fa-user"></i> ${player1Name} +1 PUAN`;
-    addP2.innerHTML = `<i class="fas fa-user-friends"></i> ${player2Name} +1 PUAN`;
 
-    // Kazanma kontrolü: sadece 3-2 veya 5-0
-    function checkWinner() {
-        // 3-2 kontrolü (her iki taraftan da olabilir)
-        if ((p1Score === 3 && p2Score === 2) || (p1Score === 2 && p2Score === 3)) {
-            return p1Score > p2Score ? 'p1' : 'p2';
-        }
-        // 5-0 kontrolü (her iki taraftan da olabilir)
-        if ((p1Score === 5 && p2Score === 0) || (p1Score === 0 && p2Score === 5)) {
-            return p1Score > p2Score ? 'p1' : 'p2';
-        }
-        return null;
+    function updateButtonTexts() {
+        const addValue = overtime ? 2 : 1;
+        addP1.innerHTML = `<i class="fas fa-user"></i> ${player1Name} +${addValue} PUAN`;
+        addP2.innerHTML = `<i class="fas fa-user-friends"></i> ${player2Name} +${addValue} PUAN`;
+        addValueBadge.innerHTML = overtime ? '<i class="fas fa-exclamation-triangle"></i> UZATMA MODU: +2 PUAN <i class="fas fa-exclamation-triangle"></i>' : '<i class="fas fa-info-circle"></i> NORMAL MAÇ: +1 PUAN';
     }
 
     function updateUI() {
         p1ScoreSpan.textContent = p1Score;
         p2ScoreSpan.textContent = p2Score;
         
-        const winner = checkWinner();
+        const totalNormalPoints = p1Score + p2Score;
         
-        if (winner && !matchWinner) {
-            matchWinner = winner;
-            const winnerName = matchWinner === 'p1' ? player1Name : player2Name;
-            resultMsgDiv.innerHTML = `<i class="fas fa-trophy"></i> 🎉🎉🎉 ${winnerName} KAZANDI!!! 🎉🎉🎉<br>🏆 ${p1Score} - ${p2Score} İLE ZAFER! 🏆`;
-            resultMsgDiv.classList.add('winner-message');
-            matchStatusDiv.innerHTML = `<i class="fas fa-flag-checkered"></i> MAÇ BİTTİ! ${winnerName} KAZANDI! <i class="fas fa-flag-checkered"></i>`;
-            matchCountDisplay.innerHTML = `<i class="fas fa-crown"></i> ŞAMPİYON ${winnerName} <i class="fas fa-crown"></i>`;
-            addP1.disabled = true;
-            addP2.disabled = true;
-            startConfetti();
-            return;
+        // Normal 5 maç tamamlandı mı? (5 maç = toplam 5 puan)
+        if (!overtime && !matchWinner && totalNormalPoints >= 5) {
+            if (p1Score === p2Score) {
+                // BERABERLİK! UZATMA BAŞLIYOR
+                overtime = true;
+                matchStatusDiv.innerHTML = `<i class="fas fa-hourglass-half"></i> UZATMA! 5 maç sonunda beraberlik! +2 puan sistemi aktif! <i class="fas fa-hourglass-half"></i>`;
+                resultMsgDiv.innerHTML = `<i class="fas fa-exclamation-triangle"></i> UZATMA BAŞLADI! Her hamlede +2 puan eklenir. Kim öndeyse kazanır!`;
+                updateButtonTexts();
+                updateUI(); // tekrar çağır ki butonlar güncellensin
+                return;
+            } else {
+                // Normalde 5 maç sonunda fark varsa KAZANAN VAR
+                matchWinner = p1Score > p2Score ? 'p1' : 'p2';
+                const winnerName = matchWinner === 'p1' ? player1Name : player2Name;
+                resultMsgDiv.innerHTML = `<i class="fas fa-trophy"></i> 🎉🎉🎉 ${winnerName} KAZANDI!!! 🎉🎉🎉<br>🏆 ${p1Score} - ${p2Score} İLE ZAFER! 🏆`;
+                resultMsgDiv.classList.add('winner-message');
+                matchStatusDiv.innerHTML = `<i class="fas fa-flag-checkered"></i> MAÇ BİTTİ! ${winnerName} KAZANDI! <i class="fas fa-flag-checkered"></i>`;
+                matchCountDisplay.innerHTML = `<i class="fas fa-crown"></i> ŞAMPİYON ${winnerName} <i class="fas fa-crown"></i>`;
+                addP1.disabled = true;
+                addP2.disabled = true;
+                startConfetti();
+                return;
+            }
         }
         
-        if (matchWinner) return;
-        
-        // Maç devam ediyor
-        const total = p1Score + p2Score;
-        matchCountDisplay.innerHTML = `<i class="fas fa-chart-simple"></i> SKOR: ${p1Score} - ${p2Score}`;
-        
-        let msg = "";
-        if (p1Score === p2Score) {
-            msg = `⚖️ BERABERE! ${player1Name} ${p1Score} - ${p2Score} ${player2Name}`;
-        } else if (p1Score > p2Score) {
-            msg = `🔥 ${player1Name} ÖNDE! (${p1Score} - ${p2Score}) Geri dönüş mümkün!`;
-        } else {
-            msg = `😤 ${player2Name} ÖNDE! (${p1Score} - ${p2Score}) Sen de toparlanabilirsin!`;
+        // UZATMA MODU KONTROLÜ
+        if (overtime && !matchWinner) {
+            if (p1Score !== p2Score) {
+                // Uzatmada kim öndeyse kazanır
+                matchWinner = p1Score > p2Score ? 'p1' : 'p2';
+                const winnerName = matchWinner === 'p1' ? player1Name : player2Name;
+                resultMsgDiv.innerHTML = `<i class="fas fa-trophy"></i> 🎉🎉🎉 UZATMA SONUCU ${winnerName} KAZANDI!!! 🎉🎉🎉<br>🏆 ${p1Score} - ${p2Score} İLE ZAFER! 🏆`;
+                resultMsgDiv.classList.add('winner-message');
+                matchStatusDiv.innerHTML = `<i class="fas fa-flag-checkered"></i> UZATMA BİTTİ! ${winnerName} KAZANDI! <i class="fas fa-flag-checkered"></i>`;
+                matchCountDisplay.innerHTML = `<i class="fas fa-crown"></i> UZATMA ŞAMPİYONU ${winnerName} <i class="fas fa-crown"></i>`;
+                addP1.disabled = true;
+                addP2.disabled = true;
+                startConfetti();
+                return;
+            } else {
+                // Uzatmada hala beraberlik
+                matchStatusDiv.innerHTML = `<i class="fas fa-hourglass-half"></i> UZATMA DEVAM EDİYOR! (${p1Score}-${p2Score}) İlk farkı yaratan kazanır! +2 puan <i class="fas fa-hourglass-half"></i>`;
+                resultMsgDiv.innerHTML = `<i class="fas fa-futbol"></i> UZATMA! Beraberlik bozulana kadar devam. Her hamle +2 puan!`;
+                matchCountDisplay.innerHTML = `<i class="fas fa-chart-simple"></i> UZATMA SKORU: ${p1Score} - ${p2Score}`;
+            }
         }
         
-        // Özel durum mesajları
-        if ((p1Score === 4 && p2Score === 0) || (p1Score === 0 && p2Score === 4)) {
-            msg += ` ⚡ 4-0! 5-0 yaparsan kazanırsın! Ama geri dönüş de olabilir! ⚡`;
-        } else if ((p1Score === 4 && p2Score === 1) || (p1Score === 1 && p2Score === 4)) {
-            msg += ` 🔥 4-1! Hala her şey mümkün! 3-2 veya 5-0'a dikkat! 🔥`;
-        } else if ((p1Score === 3 && p2Score === 1) || (p1Score === 1 && p2Score === 3)) {
-            msg += ` 🎯 3-1! Rakip 3-2 yaparsa kaybedersin! Dikkat! 🎯`;
-        } else if ((p1Score === 3 && p2Score === 0) || (p1Score === 0 && p2Score === 3)) {
-            msg += ` ⚠️ 3-0! Rakip 3-2 veya 5-0 yapabilir! Savunmaya geç! ⚠️`;
+        // Normal maç modu (5 maç tamamlanmadı)
+        if (!overtime && !matchWinner) {
+            const remaining = 5 - (p1Score + p2Score);
+            matchCountDisplay.innerHTML = `<i class="fas fa-chart-simple"></i> NORMAL MAÇ: ${p1Score + p2Score}/5`;
+            matchStatusDiv.innerHTML = `<i class="fas fa-clock"></i> ${remaining} maç kaldı. Beraberlik olursa UZATMA (+2) başlar!`;
+            
+            let msg = "";
+            if (p1Score === p2Score) {
+                msg = `⚖️ BERABERE! ${player1Name} ${p1Score} - ${p2Score} ${player2Name}`;
+            } else if (p1Score > p2Score) {
+                msg = `🔥 ${player1Name} ÖNDE! (${p1Score} - ${p2Score}) Geri dönüş mümkün!`;
+            } else {
+                msg = `😤 ${player2Name} ÖNDE! (${p1Score} - ${p2Score}) Sen de toparlanabilirsin!`;
+            }
+            
+            if (p1Score + p2Score === 4) {
+                msg += ` ⚡ SON MAÇ! Beraberlik olursa uzatma! ⚡`;
+            }
+            resultMsgDiv.innerHTML = `<i class="fas fa-futbol"></i> ${msg}`;
+            resultMsgDiv.classList.remove('winner-message');
         }
         
-        resultMsgDiv.innerHTML = `<i class="fas fa-futbol"></i> ${msg}`;
-        resultMsgDiv.classList.remove('winner-message');
-        matchStatusDiv.innerHTML = `<i class="fas fa-clock"></i> KURAL: SADECE 3-2 VEYA 5-0 İLE KAZANILIR! (Şu an ${p1Score}-${p2Score})`;
+        updateButtonTexts();
     }
 
     function addScore(player) {
         if (matchWinner) return;
-        if (player === 'p1') p1Score++;
-        else p2Score++;
+        
+        const addAmount = overtime ? 2 : 1;
+        
+        if (player === 'p1') {
+            p1Score += addAmount;
+        } else {
+            p2Score += addAmount;
+        }
+        
         updateUI();
     }
 
@@ -454,18 +500,21 @@
     function resetMatch() {
         p1Score = 0; p2Score = 0;
         matchWinner = null;
+        overtime = false;
         addP1.disabled = false;
         addP2.disabled = false;
         resultMsgDiv.classList.remove('winner-message');
         updateUI();
-        resultMsgDiv.innerHTML = `<i class="fas fa-play"></i> Maç sıfırlandı! Yeni mücadele başlıyor. 3-2 veya 5-0 ile kazanılır!`;
-        matchStatusDiv.innerHTML = `<i class="fas fa-clock"></i> KURAL: SADECE 3-2 VEYA 5-0 İLE KAZANILIR!`;
+        resultMsgDiv.innerHTML = `<i class="fas fa-play"></i> Maç sıfırlandı! Yeni mücadele başlıyor. 5 maç + uzatma kuralı aktif!`;
+        matchStatusDiv.innerHTML = `<i class="fas fa-clock"></i> 5 MAÇ + UZATMA (+2 PUAN)`;
         if (animationId) { cancelAnimationFrame(animationId); animationId = null; ctx.clearRect(0, 0, canvas.width, canvas.height); }
     }
 
     resetBtn.addEventListener('click', resetMatch);
     backBtn.addEventListener('click', () => window.location.href = 'index.html');
+    
     updateUI();
+    updateButtonTexts();
 </script>
 </body>
 </html>
