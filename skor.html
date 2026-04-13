@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>⚡ KİM KAZANACAK | 3-2 / 5-0 KURALI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: radial-gradient(circle at 10% 30%, #0f1225, #070a14);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Inter', sans-serif;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        #confetti-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        .score-card {
+            max-width: 850px;
+            width: 100%;
+            background: rgba(8, 14, 28, 0.8);
+            backdrop-filter: blur(18px);
+            border-radius: 72px;
+            border: 1px solid rgba(255, 215, 0, 0.35);
+            padding: 35px 30px;
+            box-shadow: 0 40px 70px rgba(0,0,0,0.6);
+            position: relative;
+            z-index: 10;
+        }
+
+        .premium-header {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .premium-header h1 {
+            font-family: 'Orbitron', monospace;
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #FFE6B0, #FFB347, #FF6B00);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .winner-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: linear-gradient(95deg, rgba(255,215,0,0.25), rgba(255,100,0,0.2));
+            border-radius: 100px;
+            padding: 10px 28px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            color: #FFE5A3;
+            margin-top: 15px;
+            border: 1px solid rgba(255,200,0,0.4);
+            font-family: 'Orbitron', monospace;
+        }
+
+        .vs-screen {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 25px;
+            margin-bottom: 35px;
+            flex-wrap: wrap;
+        }
+
+        .player-box {
+            flex: 1;
+            text-align: center;
+            background: linear-gradient(145deg, rgba(5, 10, 22, 0.8), rgba(0, 0, 0, 0.6));
+            border-radius: 60px;
+            padding: 28px 16px;
+            border: 1px solid rgba(255, 200, 100, 0.3);
+            transition: all 0.2s;
+        }
+
+        .player-box i {
+            font-size: 2.5rem;
+            color: #FFD966;
+            margin-bottom: 12px;
+        }
+
+        .player-name {
+            font-size: 1.7rem;
+            font-weight: 800;
+            font-family: 'Orbitron', monospace;
+            background: linear-gradient(120deg, #FFFFFF, #FFD89A);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            margin-bottom: 18px;
+        }
+
+        .score-number {
+            font-size: 4.5rem;
+            font-weight: 900;
+            font-family: 'Orbitron', monospace;
+            color: #FFE6A3;
+            text-shadow: 0 0 15px #FFA50080;
+        }
+
+        .vs-badge {
+            font-size: 2.5rem;
+            font-weight: 900;
+            background: linear-gradient(145deg, #FFB347, #FF5500);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .match-status {
+            text-align: center;
+            background: rgba(0,0,0,0.55);
+            border-radius: 50px;
+            padding: 14px;
+            margin-bottom: 25px;
+            font-weight: 700;
+            color: #FFE0A0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .score-control {
+            background: linear-gradient(125deg, rgba(20, 28, 45, 0.9), rgba(10, 15, 28, 0.95));
+            border-radius: 60px;
+            padding: 30px 25px;
+            margin-bottom: 35px;
+            border: 1px solid rgba(255, 180, 50, 0.3);
+        }
+
+        .section-title {
+            text-align: center;
+            color: #FFE0A3;
+            margin-bottom: 25px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            font-family: 'Orbitron', monospace;
+        }
+
+        .dual-buttons {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .premium-btn {
+            flex: 1;
+            background: linear-gradient(95deg, #F7B42C, #FC575E);
+            border: none;
+            padding: 20px 18px;
+            border-radius: 100px;
+            font-weight: 800;
+            font-size: 1rem;
+            color: #0A0E1C;
+            cursor: pointer;
+            transition: 0.2s;
+            font-family: 'Orbitron', monospace;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .brother-btn {
+            background: linear-gradient(95deg, #3a6ea5, #1e3a5f);
+            color: #FFE6B0;
+        }
+
+        .premium-btn:active { transform: scale(0.97); }
+        .premium-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+        .result-message {
+            background: #00000066;
+            border-radius: 50px;
+            padding: 18px;
+            text-align: center;
+            font-weight: 700;
+            font-size: 1rem;
+            color: #FFECB3;
+            margin-top: 25px;
+            border-left: 6px solid #FFB347;
+        }
+
+        .winner-message {
+            background: linear-gradient(95deg, #FFD700, #FF8C00);
+            color: #1e1a0a;
+            font-size: 1.3rem;
+            font-weight: 900;
+            animation: winnerGlow 0.4s ease;
+        }
+
+        @keyframes winnerGlow {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+
+        .reset-btn, .back-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 14px 22px;
+            border-radius: 100px;
+            font-weight: 600;
+            color: #ffcd94;
+            margin-top: 14px;
+            cursor: pointer;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: 0.2s;
+        }
+
+        .reset-btn:hover, .back-btn:hover {
+            background: rgba(255, 200, 100, 0.15);
+        }
+
+        @media (max-width: 680px) {
+            .score-card { padding: 25px 18px; }
+            .vs-screen { flex-direction: column; }
+            .vs-badge { transform: rotate(90deg); }
+            .player-name { font-size: 1.3rem; }
+            .score-number { font-size: 3rem; }
+            .premium-btn { font-size: 0.8rem; padding: 14px; }
+        }
+    </style>
+</head>
+<body>
+<canvas id="confetti-canvas"></canvas>
+<div class="score-card">
+    <div class="premium-header">
+        <h1><i class="fas fa-trophy"></i> KİM KAZANACAK <i class="fas fa-bolt"></i></h1>
+        <div class="winner-badge" id="matchCountDisplay">
+            <i class="fas fa-chart-simple"></i> MAÇ 0/?
+        </div>
+    </div>
+
+    <div class="vs-screen">
+        <div class="player-box">
+            <i class="fas fa-user"></i>
+            <div class="player-name" id="player1NameDisplay">1. SAVAŞÇI</div>
+            <div class="score-number" id="player1Score">0</div>
+        </div>
+        <div class="vs-badge"><i class="fas fa-skull-crossbones"></i> VS <i class="fas fa-dragon"></i></div>
+        <div class="player-box">
+            <i class="fas fa-user-friends"></i>
+            <div class="player-name" id="player2NameDisplay">2. SAVAŞÇI</div>
+            <div class="score-number" id="player2Score">0</div>
+        </div>
+    </div>
+
+    <div class="match-status" id="matchStatus">
+        <i class="fas fa-clock"></i> KURAL: SADECE 3-2 VEYA 5-0 İLE KAZANILIR!
+    </div>
+
+    <div class="score-control">
+        <div class="section-title"><i class="fas fa-plus-circle"></i> PUAN EKLE (1'ER 1'ER) <i class="fas fa-fist-raised"></i></div>
+        <div class="dual-buttons">
+            <button class="premium-btn" id="addPlayer1Btn"><i class="fas fa-user"></i> +1 PUAN EKLE</button>
+            <button class="premium-btn brother-btn" id="addPlayer2Btn"><i class="fas fa-user-friends"></i> +1 PUAN EKLE</button>
+        </div>
+        <div class="result-message" id="resultMsg">
+            <i class="fas fa-play"></i> Maç başladı! Her hamlede 1 puan eklenir. 3-2 veya 5-0 ile kazanılır!
+        </div>
+    </div>
+
+    <button class="reset-btn" id="resetBtn"><i class="fas fa-undo-alt"></i> MAÇI SIFIRLA</button>
+    <button class="back-btn" id="backBtn"><i class="fas fa-arrow-left"></i> İSİM DEĞİŞTİR</button>
+</div>
+
+<script>
+    // Konfeti efekti
+    const canvas = document.getElementById('confetti-canvas');
+    const ctx = canvas.getContext('2d');
+    let animationId = null;
+    let particles = [];
+
+    function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    class Particle {
+        constructor(x, y, color) {
+            this.x = x; this.y = y; this.color = color;
+            this.size = Math.random() * 9 + 5;
+            this.speedX = (Math.random() - 0.5) * 14;
+            this.speedY = Math.random() * 12 + 6;
+            this.gravity = 0.28;
+            this.friction = 0.98;
+            this.rotation = Math.random() * 360;
+            this.rotSpeed = (Math.random() - 0.5) * 12;
+        }
+        update() {
+            this.speedX *= this.friction;
+            this.speedY += this.gravity;
+            this.x += this.speedX;
+            this.y += this.speedY;
+            this.rotation += this.rotSpeed;
+        }
+        draw() {
+            ctx.save();
+            ctx.translate(this.x, this.y);
+            ctx.rotate(this.rotation * Math.PI / 180);
+            ctx.fillStyle = this.color;
+            ctx.fillRect(-this.size/2, -this.size/2, this.size, this.size);
+            ctx.restore();
+        }
+    }
+
+    function startConfetti() {
+        if (animationId) cancelAnimationFrame(animationId);
+        particles = [];
+        const colors = ['#FFD700', '#FFA500', '#FF6347', '#FF69B4', '#00CED1', '#32CD32', '#FF4500', '#FFDAB9', '#FFE4B5'];
+        for (let i = 0; i < 220; i++) {
+            const x = Math.random() * canvas.width;
+            const y = Math.random() * canvas.height - canvas.height;
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            particles.push(new Particle(x, y, color));
+        }
+        function animate() {
+            if (!canvas.isConnected) return;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            let active = false;
+            for (let p of particles) { p.update(); p.draw(); if (p.y < canvas.height + 150) active = true; }
+            if (active) animationId = requestAnimationFrame(animate);
+            else { cancelAnimationFrame(animationId); animationId = null; ctx.clearRect(0, 0, canvas.width, canvas.height); }
+        }
+        animate();
+        setTimeout(() => { if (animationId) { cancelAnimationFrame(animationId); animationId = null; ctx.clearRect(0, 0, canvas.width, canvas.height); } }, 4500);
+    }
+
+    // OYUN MANTIĞI
+    let player1Name = localStorage.getItem('player1Name') || '1. SAVAŞÇI';
+    let player2Name = localStorage.getItem('player2Name') || '2. SAVAŞÇI';
+    let p1Score = 0, p2Score = 0;
+    let matchWinner = null;
+
+    const p1NameSpan = document.getElementById('player1NameDisplay');
+    const p2NameSpan = document.getElementById('player2NameDisplay');
+    const p1ScoreSpan = document.getElementById('player1Score');
+    const p2ScoreSpan = document.getElementById('player2Score');
+    const addP1 = document.getElementById('addPlayer1Btn');
+    const addP2 = document.getElementById('addPlayer2Btn');
+    const resetBtn = document.getElementById('resetBtn');
+    const backBtn = document.getElementById('backBtn');
+    const resultMsgDiv = document.getElementById('resultMsg');
+    const matchCountDisplay = document.getElementById('matchCountDisplay');
+    const matchStatusDiv = document.getElementById('matchStatus');
+
+    p1NameSpan.textContent = player1Name;
+    p2NameSpan.textContent = player2Name;
+    addP1.innerHTML = `<i class="fas fa-user"></i> ${player1Name} +1 PUAN`;
+    addP2.innerHTML = `<i class="fas fa-user-friends"></i> ${player2Name} +1 PUAN`;
+
+    // Kazanma kontrolü: sadece 3-2 veya 5-0
+    function checkWinner() {
+        // 3-2 kontrolü (her iki taraftan da olabilir)
+        if ((p1Score === 3 && p2Score === 2) || (p1Score === 2 && p2Score === 3)) {
+            return p1Score > p2Score ? 'p1' : 'p2';
+        }
+        // 5-0 kontrolü (her iki taraftan da olabilir)
+        if ((p1Score === 5 && p2Score === 0) || (p1Score === 0 && p2Score === 5)) {
+            return p1Score > p2Score ? 'p1' : 'p2';
+        }
+        return null;
+    }
+
+    function updateUI() {
+        p1ScoreSpan.textContent = p1Score;
+        p2ScoreSpan.textContent = p2Score;
+        
+        const winner = checkWinner();
+        
+        if (winner && !matchWinner) {
+            matchWinner = winner;
+            const winnerName = matchWinner === 'p1' ? player1Name : player2Name;
+            resultMsgDiv.innerHTML = `<i class="fas fa-trophy"></i> 🎉🎉🎉 ${winnerName} KAZANDI!!! 🎉🎉🎉<br>🏆 ${p1Score} - ${p2Score} İLE ZAFER! 🏆`;
+            resultMsgDiv.classList.add('winner-message');
+            matchStatusDiv.innerHTML = `<i class="fas fa-flag-checkered"></i> MAÇ BİTTİ! ${winnerName} KAZANDI! <i class="fas fa-flag-checkered"></i>`;
+            matchCountDisplay.innerHTML = `<i class="fas fa-crown"></i> ŞAMPİYON ${winnerName} <i class="fas fa-crown"></i>`;
+            addP1.disabled = true;
+            addP2.disabled = true;
+            startConfetti();
+            return;
+        }
+        
+        if (matchWinner) return;
+        
+        // Maç devam ediyor
+        const total = p1Score + p2Score;
+        matchCountDisplay.innerHTML = `<i class="fas fa-chart-simple"></i> SKOR: ${p1Score} - ${p2Score}`;
+        
+        let msg = "";
+        if (p1Score === p2Score) {
+            msg = `⚖️ BERABERE! ${player1Name} ${p1Score} - ${p2Score} ${player2Name}`;
+        } else if (p1Score > p2Score) {
+            msg = `🔥 ${player1Name} ÖNDE! (${p1Score} - ${p2Score}) Geri dönüş mümkün!`;
+        } else {
+            msg = `😤 ${player2Name} ÖNDE! (${p1Score} - ${p2Score}) Sen de toparlanabilirsin!`;
+        }
+        
+        // Özel durum mesajları
+        if ((p1Score === 4 && p2Score === 0) || (p1Score === 0 && p2Score === 4)) {
+            msg += ` ⚡ 4-0! 5-0 yaparsan kazanırsın! Ama geri dönüş de olabilir! ⚡`;
+        } else if ((p1Score === 4 && p2Score === 1) || (p1Score === 1 && p2Score === 4)) {
+            msg += ` 🔥 4-1! Hala her şey mümkün! 3-2 veya 5-0'a dikkat! 🔥`;
+        } else if ((p1Score === 3 && p2Score === 1) || (p1Score === 1 && p2Score === 3)) {
+            msg += ` 🎯 3-1! Rakip 3-2 yaparsa kaybedersin! Dikkat! 🎯`;
+        } else if ((p1Score === 3 && p2Score === 0) || (p1Score === 0 && p2Score === 3)) {
+            msg += ` ⚠️ 3-0! Rakip 3-2 veya 5-0 yapabilir! Savunmaya geç! ⚠️`;
+        }
+        
+        resultMsgDiv.innerHTML = `<i class="fas fa-futbol"></i> ${msg}`;
+        resultMsgDiv.classList.remove('winner-message');
+        matchStatusDiv.innerHTML = `<i class="fas fa-clock"></i> KURAL: SADECE 3-2 VEYA 5-0 İLE KAZANILIR! (Şu an ${p1Score}-${p2Score})`;
+    }
+
+    function addScore(player) {
+        if (matchWinner) return;
+        if (player === 'p1') p1Score++;
+        else p2Score++;
+        updateUI();
+    }
+
+    addP1.addEventListener('click', () => addScore('p1'));
+    addP2.addEventListener('click', () => addScore('p2'));
+
+    function resetMatch() {
+        p1Score = 0; p2Score = 0;
+        matchWinner = null;
+        addP1.disabled = false;
+        addP2.disabled = false;
+        resultMsgDiv.classList.remove('winner-message');
+        updateUI();
+        resultMsgDiv.innerHTML = `<i class="fas fa-play"></i> Maç sıfırlandı! Yeni mücadele başlıyor. 3-2 veya 5-0 ile kazanılır!`;
+        matchStatusDiv.innerHTML = `<i class="fas fa-clock"></i> KURAL: SADECE 3-2 VEYA 5-0 İLE KAZANILIR!`;
+        if (animationId) { cancelAnimationFrame(animationId); animationId = null; ctx.clearRect(0, 0, canvas.width, canvas.height); }
+    }
+
+    resetBtn.addEventListener('click', resetMatch);
+    backBtn.addEventListener('click', () => window.location.href = 'index.html');
+    updateUI();
+</script>
+</body>
+</html>
