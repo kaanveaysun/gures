@@ -2,556 +2,509 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>⚡ KİM KAZANACAK | 2-2'DEN 3-2 | 5-0</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ULTIMATE WRESTLING HUD</title>
+    <link href="https://fonts.googleapis.com/css2?family=Teko:wght@500;700&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        :root {
+            --red-glow: #ff0055;
+            --blue-glow: #00f0ff;
+            --bg-dark: #050508;
+            --yellow: #ffd500;
         }
 
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
         body {
-            background: radial-gradient(circle at 10% 30%, #0f1225, #070a14);
-            min-height: 100vh;
+            background-color: var(--bg-dark);
+            height: 100vh;
+            overflow: hidden;
+            font-family: 'Teko', sans-serif;
+            color: #fff;
+            user-select: none;
+        }
+
+        .arena {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: 
+                linear-gradient(90deg, rgba(255,0,85,0.08) 0%, rgba(5,5,8,1) 40%, rgba(5,5,8,1) 60%, rgba(0,240,255,0.08) 100%),
+                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.03) 2px, rgba(255,255,255,0.03) 4px);
+            z-index: -1;
+            transition: box-shadow 0.5s ease;
+        }
+
+        .arena::after {
+            content: ''; position: absolute; left: 50%; top: 0; bottom: 0; width: 2px;
+            background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.1), transparent);
+            transform: translateX(-50%);
+        }
+
+        /* TOP HUD */
+        .hud-header {
             display: flex;
-            justify-content: center;
-            align-items: center;
-            font-family: 'Inter', sans-serif;
-            padding: 20px;
-            position: relative;
-            overflow-x: hidden;
-        }
-
-        #confetti-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1000;
-        }
-
-        .score-card {
-            max-width: 850px;
-            width: 100%;
-            background: rgba(8, 14, 28, 0.8);
-            backdrop-filter: blur(18px);
-            border-radius: 72px;
-            border: 1px solid rgba(255, 215, 0, 0.35);
-            padding: 35px 30px;
-            box-shadow: 0 40px 70px rgba(0,0,0,0.6);
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 20px 40px;
             position: relative;
             z-index: 10;
         }
 
-        .premium-header {
-            text-align: center;
-            margin-bottom: 35px;
-        }
-
-        .premium-header h1 {
-            font-family: 'Orbitron', monospace;
-            font-size: 1.8rem;
-            background: linear-gradient(135deg, #FFE6B0, #FFB347, #FF6B00);
-            background-clip: text;
-            -webkit-background-clip: text;
-            color: transparent;
-        }
-
-        .winner-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 12px;
-            background: rgba(255,215,0,0.2);
-            border-radius: 100px;
-            padding: 8px 24px;
-            font-size: 0.85rem;
-            font-weight: bold;
-            color: #FFE5A3;
-            margin-top: 15px;
-            border: 1px solid rgba(255,200,0,0.4);
-            font-family: 'Orbitron', monospace;
-        }
-
-        .vs-screen {
+        .fighter-plate {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 25px;
-            margin-bottom: 35px;
-            flex-wrap: wrap;
+            flex-direction: column;
+            width: 40%;
         }
 
-        .player-box {
-            flex: 1;
-            text-align: center;
-            background: linear-gradient(145deg, rgba(5, 10, 22, 0.8), rgba(0, 0, 0, 0.6));
-            border-radius: 60px;
-            padding: 25px 16px;
-            border: 1px solid rgba(255, 200, 100, 0.3);
+        .fighter-plate.p1 { align-items: flex-start; }
+        .fighter-plate.p2 { align-items: flex-end; }
+
+        .fighter-name-wrap {
+            background: rgba(0,0,0,0.7);
+            border: 2px solid;
+            padding: 10px 40px;
+            transform: skewX(-15deg);
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            display: inline-block;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        .player-box i {
-            font-size: 2.2rem;
-            color: #FFD966;
-            margin-bottom: 10px;
-        }
+        .p1 .fighter-name-wrap { border-color: var(--red-glow); box-shadow: 0 0 15px rgba(255,0,85,0.4); }
+        .p2 .fighter-name-wrap { border-color: var(--blue-glow); box-shadow: 0 0 15px rgba(0,240,255,0.4); }
 
-        .player-name {
-            font-size: 1.5rem;
-            font-weight: 800;
-            font-family: 'Orbitron', monospace;
-            background: linear-gradient(120deg, #FFFFFF, #FFD89A);
-            background-clip: text;
-            -webkit-background-clip: text;
-            color: transparent;
-            margin-bottom: 15px;
-        }
-
-        .score-number {
-            font-size: 4rem;
-            font-weight: 900;
-            font-family: 'Orbitron', monospace;
-            color: #FFE6A3;
-            text-shadow: 0 0 15px #FFA50080;
-        }
-
-        .vs-badge {
+        .fighter-name {
+            font-family: 'Orbitron', sans-serif;
             font-size: 2rem;
             font-weight: 900;
-            background: linear-gradient(145deg, #FFB347, #FF5500);
-            background-clip: text;
-            -webkit-background-clip: text;
-            color: transparent;
+            transform: skewX(15deg);
+            text-transform: uppercase;
+            letter-spacing: 2px;
         }
+        
+        .p1 .fighter-name { color: var(--red-glow); text-shadow: 0 0 10px var(--red-glow); }
+        .p2 .fighter-name { color: var(--blue-glow); text-shadow: 0 0 10px var(--blue-glow); }
 
-        .match-status {
-            text-align: center;
-            background: rgba(0,0,0,0.55);
-            border-radius: 50px;
-            padding: 12px;
-            margin-bottom: 25px;
-            font-weight: 600;
-            color: #FFE0A0;
+        .bars-container {
             display: flex;
-            align-items: center;
-            justify-content: center;
             gap: 10px;
-            font-size: 0.9rem;
+            margin-top: 15px;
+            transform: skewX(-15deg);
         }
 
-        .score-control {
-            background: linear-gradient(125deg, rgba(20, 28, 45, 0.9), rgba(10, 15, 28, 0.95));
-            border-radius: 60px;
-            padding: 25px 22px;
-            margin-bottom: 35px;
-            border: 1px solid rgba(255, 180, 50, 0.3);
+        .p2 .bars-container { flex-direction: row-reverse; }
+
+        .power-bar {
+            width: 35px;
+            height: 15px;
+            background: #222;
+            border: 1px solid #444;
+            transition: all 0.3s;
         }
 
-        .section-title {
-            text-align: center;
-            color: #FFE0A3;
-            margin-bottom: 20px;
-            font-weight: 700;
-            font-size: 1rem;
-            font-family: 'Orbitron', monospace;
-        }
+        .p1 .power-bar.filled { background: var(--red-glow); border-color: #fff; box-shadow: 0 0 15px var(--red-glow); }
+        .p2 .power-bar.filled { background: var(--blue-glow); border-color: #fff; box-shadow: 0 0 15px var(--blue-glow); }
 
-        .add-value-badge {
-            text-align: center;
-            background: rgba(255,200,0,0.2);
-            border-radius: 40px;
-            padding: 6px 12px;
-            margin-bottom: 20px;
-            display: inline-block;
-            width: auto;
-            margin-left: auto;
-            margin-right: auto;
-            font-size: 0.8rem;
-            color: #FFD966;
-        }
-
-        .dual-buttons {
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-
-        .premium-btn {
-            flex: 1;
-            background: linear-gradient(95deg, #F7B42C, #FC575E);
-            border: none;
-            padding: 18px 16px;
-            border-radius: 100px;
-            font-weight: 800;
-            font-size: 0.95rem;
-            color: #0A0E1C;
-            cursor: pointer;
-            transition: 0.2s;
-            font-family: 'Orbitron', monospace;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .brother-btn {
-            background: linear-gradient(95deg, #3a6ea5, #1e3a5f);
-            color: #FFE6B0;
-        }
-
-        .premium-btn:active { transform: scale(0.97); }
-        .premium-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
-
-        .result-message {
-            background: #00000066;
-            border-radius: 50px;
-            padding: 16px;
-            text-align: center;
-            font-weight: 600;
-            font-size: 0.9rem;
-            color: #FFECB3;
-            margin-top: 25px;
-            border-left: 5px solid #FFB347;
-        }
-
-        .winner-message {
-            background: linear-gradient(95deg, #FFD700, #FF8C00);
-            color: #1e1a0a;
-            font-size: 1.2rem;
+        .vs-badge {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 4rem;
             font-weight: 900;
-            animation: winnerGlow 0.4s ease;
+            background: linear-gradient(to bottom, #fff, #888);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: absolute;
+            left: 50%; top: 20px;
+            transform: translateX(-50%);
+            filter: drop-shadow(0 5px 15px rgba(0,0,0,1));
         }
 
-        @keyframes winnerGlow {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.02); }
-        }
-
-        .reset-btn, .back-btn {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 12px 20px;
-            border-radius: 100px;
-            font-weight: 500;
-            color: #ffcd94;
-            margin-top: 12px;
-            cursor: pointer;
-            width: 100%;
+        /* CENTER LARGE SCORES */
+        .score-display-center {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
             display: flex;
-            align-items: center;
+            gap: 25vw;
+            pointer-events: none;
+            width: 100%;
             justify-content: center;
-            gap: 8px;
-            transition: 0.2s;
-            font-size: 0.85rem;
         }
 
-        .reset-btn:hover, .back-btn:hover {
-            background: rgba(255, 200, 100, 0.15);
+        .huge-score {
+            font-size: 45vh;
+            line-height: 0.8;
+            font-weight: 700;
+            opacity: 0.15;
+            text-shadow: 0 0 50px rgba(255,255,255,0.1);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        @media (max-width: 680px) {
-            .score-card { padding: 25px 18px; }
-            .vs-screen { flex-direction: column; }
-            .vs-badge { transform: rotate(90deg); }
-            .player-name { font-size: 1.2rem; }
-            .score-number { font-size: 2.8rem; }
-            .premium-btn { font-size: 0.75rem; padding: 12px; }
+        .p1 .huge-score { color: var(--red-glow); }
+        .p2 .huge-score { color: var(--blue-glow); }
+        
+        .huge-score.pop {
+            opacity: 0.9;
+            transform: scale(1.1);
+            text-shadow: 0 0 100px currentColor;
         }
+
+        /* BOTTOM DRUM PAD BUTTONS */
+        .action-dock {
+            position: absolute;
+            bottom: 40px; left: 0; right: 0;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 0 20px;
+            z-index: 20;
+        }
+
+        .drum-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            position: relative;
+            outline: none;
+            width: 140px; height: 140px;
+            border-radius: 50%;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .drum-btn:disabled { cursor: not-allowed; opacity: 0.4; filter: grayscale(1); }
+
+        .drum-base {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            border-radius: 50%;
+            box-shadow: inset 0 -5px 15px rgba(0,0,0,0.8);
+        }
+
+        .p1-add .drum-base { background: #66001a; }
+        .p2-add .drum-base { background: #004d4f; }
+
+        .drum-top {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            border-radius: 50%;
+            display: flex; justify-content: center; align-items: center;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem; font-weight: 900;
+            text-transform: uppercase;
+            box-shadow: inset 0 8px 10px rgba(255,255,255,0.3), 0 10px 20px rgba(0,0,0,0.5);
+            transform: translateY(-15px);
+            transition: transform 0.1s cubic-bezier(0, 0, 0.2, 1);
+        }
+
+        .p1-add .drum-top { background: var(--red-glow); color: #fff; text-shadow: 0 2px 5px rgba(0,0,0,0.5); }
+        .p2-add .drum-top { background: var(--blue-glow); color: #000; text-shadow: 0 2px 5px rgba(255,255,255,0.5); }
+
+        .drum-btn:active:not(:disabled) .drum-top { transform: translateY(-2px); box-shadow: inset 0 4px 5px rgba(255,255,255,0.1), 0 2px 5px rgba(0,0,0,0.5); }
+
+        .sys-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .icon-btn {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.3);
+            color: #fff;
+            width: 60px; height: 60px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex; justify-content: center; align-items: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .icon-btn:hover { background: rgba(255,255,255,0.25); transform: scale(1.1); box-shadow: 0 0 15px rgba(255,255,255,0.5); }
+        .icon-btn:active { transform: scale(0.95); }
+        .icon-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+        @media (max-width: 768px) {
+            .hud-header { padding: 10px; }
+            .fighter-name-wrap { padding: 5px 15px; }
+            .fighter-name { font-size: 1.4rem; }
+            .power-bar { width: 20px; height: 10px; }
+            .vs-badge { font-size: 2rem; top: 15px; }
+            .huge-score { font-size: 30vh; }
+            .score-display-center { gap: 15vw; }
+            .drum-btn { width: 100px; height: 100px; }
+            .drum-top { font-size: 1rem; transform: translateY(-10px); }
+            .icon-btn { width: 50px; height: 50px; font-size: 1.2rem; }
+            .action-dock { bottom: 20px; padding: 0 10px; }
+        }
+
+        /* MODAL */
+        .modal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 100;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            opacity: 0; pointer-events: none;
+            transition: opacity 0.5s;
+        }
+        .modal.show { opacity: 1; pointer-events: auto; }
+        
+        .modal-winner {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 5rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            text-align: center;
+            margin-bottom: 40px;
+            transform: scale(0.5);
+            transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            line-height: 1.1;
+        }
+        .modal.show .modal-winner { transform: scale(1); text-shadow: 0 0 30px currentColor; }
+
+        .modal-btn {
+            background: transparent;
+            border: 2px solid #fff;
+            color: #fff;
+            padding: 15px 40px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            cursor: pointer;
+            margin: 10px;
+            transition: all 0.3s;
+            text-transform: uppercase;
+        }
+        .modal-btn:hover { background: #fff; color: #000; box-shadow: 0 0 20px #fff; }
+        .modal-btn.secondary { font-size: 1.2rem; border-color: #555; color: #ccc; }
+        .modal-btn.secondary:hover { border-color: #fff; color: #fff; background: transparent; }
+
+        /* LEADING GLOW EFFECTS */
+        body.lead-p1 .arena {
+            box-shadow: inset 80px 0 200px -20px rgba(255,0,85,0.25);
+            animation: p1Pulse 1.5s infinite alternate;
+        }
+
+        body.lead-p2 .arena {
+            box-shadow: inset -80px 0 200px -20px rgba(0,240,255,0.25);
+            animation: p2Pulse 1.5s infinite alternate;
+        }
+
+        @keyframes p1Pulse {
+            0% { box-shadow: inset 50px 0 150px -20px rgba(255,0,85,0.15); }
+            100% { box-shadow: inset 150px 0 250px -20px rgba(255,0,85,0.45); }
+        }
+
+        @keyframes p2Pulse {
+            0% { box-shadow: inset -50px 0 150px -20px rgba(0,240,255,0.15); }
+            100% { box-shadow: inset -150px 0 250px -20px rgba(0,240,255,0.45); }
+        }
+
+        body.lead-p1 .p1 .fighter-name-wrap { 
+            box-shadow: 0 0 50px rgba(255,0,85,0.9), inset 0 0 20px rgba(255,0,85,0.6); 
+            border-color: #fff; 
+            transform: skewX(-15deg) scale(1.08);
+        }
+        body.lead-p2 .p2 .fighter-name-wrap { 
+            box-shadow: 0 0 50px rgba(0,240,255,0.9), inset 0 0 20px rgba(0,240,255,0.6); 
+            border-color: #fff; 
+            transform: skewX(-15deg) scale(1.08);
+        }
+        
+        body.lead-p1 .p1 .fighter-name { color: #fff; text-shadow: 0 0 25px rgba(255,0,85,1), 0 0 45px rgba(255,0,85,1); }
+        body.lead-p2 .p2 .fighter-name { color: #fff; text-shadow: 0 0 25px rgba(0,240,255,1), 0 0 45px rgba(0,240,255,1); }
+
+        body.lead-p1 #score1bg { opacity: 0.4; text-shadow: 0 0 120px var(--red-glow); transform: scale(1.15); }
+        body.lead-p2 #score2bg { opacity: 0.4; text-shadow: 0 0 120px var(--blue-glow); transform: scale(1.15); }
     </style>
 </head>
 <body>
-<canvas id="confetti-canvas"></canvas>
-<div class="score-card">
-    <div class="premium-header">
-        <h1><i class="fas fa-trophy"></i> KİM KAZANACAK <i class="fas fa-bolt"></i></h1>
-        <div class="winner-badge" id="matchCountDisplay">
-            <i class="fas fa-chart-simple"></i> MAÇ BAŞLIYOR
+
+    <div class="arena"></div>
+
+    <div class="hud-header">
+        <div class="fighter-plate p1">
+            <div class="fighter-name-wrap">
+                <div class="fighter-name" id="name1">Fighter 1</div>
+            </div>
+            <div class="bars-container" id="bars1">
+                <div class="power-bar"></div><div class="power-bar"></div><div class="power-bar"></div><div class="power-bar"></div><div class="power-bar"></div><div class="power-bar"></div>
+            </div>
         </div>
-    </div>
-
-    <div class="vs-screen">
-        <div class="player-box">
-            <i class="fas fa-user"></i>
-            <div class="player-name" id="player1NameDisplay">KAAN</div>
-            <div class="score-number" id="player1Score">0</div>
-        </div>
-        <div class="vs-badge"><i class="fas fa-skull-crossbones"></i> VS <i class="fas fa-dragon"></i></div>
-        <div class="player-box">
-            <i class="fas fa-user-friends"></i>
-            <div class="player-name" id="player2NameDisplay">ELISA</div>
-            <div class="score-number" id="player2Score">0</div>
-        </div>
-    </div>
-
-    <div class="match-status" id="matchStatus">
-        <i class="fas fa-clock"></i> SADECE 2-2'DEN 3-2 veya 5-0 ile kazanılır!
-    </div>
-
-    <div class="score-control">
-        <div class="section-title"><i class="fas fa-plus-circle"></i> PUAN EKLE</div>
-        <div style="text-align: center; margin-bottom: 15px;">
-            <span class="add-value-badge" id="addValueBadge"><i class="fas fa-info-circle"></i> NORMAL: +1 | UZATMA: +2</span>
-        </div>
-        <div class="dual-buttons">
-            <button class="premium-btn" id="addPlayer1Btn"><i class="fas fa-user"></i> +1 PUAN EKLE</button>
-            <button class="premium-btn brother-btn" id="addPlayer2Btn"><i class="fas fa-user-friends"></i> +1 PUAN EKLE</button>
-        </div>
-        <div class="result-message" id="resultMsg">
-            <i class="fas fa-play"></i> Maç başladı!
-        </div>
-    </div>
-
-    <button class="reset-btn" id="resetBtn"><i class="fas fa-undo-alt"></i> MAÇI SIFIRLA</button>
-    <button class="back-btn" id="backBtn"><i class="fas fa-arrow-left"></i> İSİM DEĞİŞTİR</button>
-</div>
-
-<script>
-    // Konfeti efekti
-    const canvas = document.getElementById('confetti-canvas');
-    const ctx = canvas.getContext('2d');
-    let animationId = null;
-    let particles = [];
-
-    function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-    window.addEventListener('resize', resizeCanvas);
-    resizeCanvas();
-
-    class Particle {
-        constructor(x, y, color) {
-            this.x = x; this.y = y; this.color = color;
-            this.size = Math.random() * 8 + 4;
-            this.speedX = (Math.random() - 0.5) * 12;
-            this.speedY = Math.random() * 10 + 5;
-            this.gravity = 0.28;
-            this.friction = 0.98;
-            this.rotation = Math.random() * 360;
-            this.rotSpeed = (Math.random() - 0.5) * 10;
-        }
-        update() {
-            this.speedX *= this.friction;
-            this.speedY += this.gravity;
-            this.x += this.speedX;
-            this.y += this.speedY;
-            this.rotation += this.rotSpeed;
-        }
-        draw() {
-            ctx.save();
-            ctx.translate(this.x, this.y);
-            ctx.rotate(this.rotation * Math.PI / 180);
-            ctx.fillStyle = this.color;
-            ctx.fillRect(-this.size/2, -this.size/2, this.size, this.size);
-            ctx.restore();
-        }
-    }
-
-    function startConfetti() {
-        if (animationId) cancelAnimationFrame(animationId);
-        particles = [];
-        const colors = ['#FFD700', '#FFA500', '#FF6347', '#FF69B4', '#00CED1', '#32CD32', '#FF4500', '#FFDAB9'];
-        for (let i = 0; i < 200; i++) {
-            const x = Math.random() * canvas.width;
-            const y = Math.random() * canvas.height - canvas.height;
-            const color = colors[Math.floor(Math.random() * colors.length)];
-            particles.push(new Particle(x, y, color));
-        }
-        function animate() {
-            if (!canvas.isConnected) return;
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            let active = false;
-            for (let p of particles) { p.update(); p.draw(); if (p.y < canvas.height + 150) active = true; }
-            if (active) animationId = requestAnimationFrame(animate);
-            else { cancelAnimationFrame(animationId); animationId = null; ctx.clearRect(0, 0, canvas.width, canvas.height); }
-        }
-        animate();
-        setTimeout(() => { if (animationId) { cancelAnimationFrame(animationId); animationId = null; ctx.clearRect(0, 0, canvas.width, canvas.height); } }, 4000);
-    }
-
-    // OYUN MANTIĞI
-    let player1Name = localStorage.getItem('player1Name') || 'KAAN';
-    let player2Name = localStorage.getItem('player2Name') || 'ELISA';
-    let p1Score = 0, p2Score = 0;
-    let matchWinner = null;
-    let overtime = false;
-
-    const p1NameSpan = document.getElementById('player1NameDisplay');
-    const p2NameSpan = document.getElementById('player2NameDisplay');
-    const p1ScoreSpan = document.getElementById('player1Score');
-    const p2ScoreSpan = document.getElementById('player2Score');
-    const addP1 = document.getElementById('addPlayer1Btn');
-    const addP2 = document.getElementById('addPlayer2Btn');
-    const resetBtn = document.getElementById('resetBtn');
-    const backBtn = document.getElementById('backBtn');
-    const resultMsgDiv = document.getElementById('resultMsg');
-    const matchCountDisplay = document.getElementById('matchCountDisplay');
-    const matchStatusDiv = document.getElementById('matchStatus');
-    const addValueBadge = document.getElementById('addValueBadge');
-
-    p1NameSpan.textContent = player1Name;
-    p2NameSpan.textContent = player2Name;
-
-    // ÖNCEKİ SKORU TUT (2-2'den 3-2 kontrolü için)
-    let previousP1 = 0, previousP2 = 0;
-
-    // Kazanma kontrolü
-    function checkWinner(newP1, newP2, oldP1, oldP2) {
-        // 5-0 kontrolü (direkt kazanır)
-        if (newP1 === 5 && newP2 === 0) return 'p1';
-        if (newP1 === 0 && newP2 === 5) return 'p2';
         
-        // 2-2'den 3-2 olma kontrolü (SADECE 2-2 iken atılan puanla 3-2 olursa)
-        if (oldP1 === 2 && oldP2 === 2) {
-            if (newP1 === 3 && newP2 === 2) return 'p1';
-            if (newP1 === 2 && newP2 === 3) return 'p2';
-        }
-        
-        return null;
-    }
+        <div class="vs-badge">VS</div>
 
-    function updateButtonTexts() {
-        const addValue = overtime ? 2 : 1;
-        addP1.innerHTML = `<i class="fas fa-user"></i> ${player1Name} +${addValue} PUAN`;
-        addP2.innerHTML = `<i class="fas fa-user-friends"></i> ${player2Name} +${addValue} PUAN`;
-        addValueBadge.innerHTML = overtime ? '<i class="fas fa-exclamation-triangle"></i> UZATMA MODU: +2 PUAN <i class="fas fa-exclamation-triangle"></i>' : '<i class="fas fa-info-circle"></i> NORMAL MAÇ: +1 PUAN';
-    }
+        <div class="fighter-plate p2">
+            <div class="fighter-name-wrap">
+                <div class="fighter-name" id="name2">Fighter 2</div>
+            </div>
+            <div class="bars-container" id="bars2">
+                <div class="power-bar"></div><div class="power-bar"></div><div class="power-bar"></div><div class="power-bar"></div><div class="power-bar"></div><div class="power-bar"></div>
+            </div>
+        </div>
+    </div>
 
-    function updateUI() {
-        p1ScoreSpan.textContent = p1Score;
-        p2ScoreSpan.textContent = p2Score;
+    <div class="score-display-center">
+        <div class="huge-score p1" id="score1bg">0</div>
+        <div class="huge-score p2" id="score2bg">0</div>
+    </div>
+
+    <div class="action-dock">
+        <button class="drum-btn p1-add" id="add1" onclick="addScore(1)">
+            <div class="drum-base"></div>
+            <div class="drum-top">PUAN<br>AL</div>
+        </button>
         
-        if (!matchWinner) {
-            if (!overtime) {
-                const totalPoints = p1Score + p2Score;
-                
-                // Normal modda kazanan kontrolü (5-0 veya 2-2'den 3-2)
-                const winner = checkWinner(p1Score, p2Score, previousP1, previousP2);
-                if (winner) {
-                    matchWinner = winner;
-                    const winnerName = matchWinner === 'p1' ? player1Name : player2Name;
-                    resultMsgDiv.innerHTML = `<i class="fas fa-trophy"></i> 🎉🎉🎉 ${winnerName} KAZANDI!!! 🎉🎉🎉<br>🏆 ${p1Score} - ${p2Score} İLE ZAFER! 🏆`;
-                    resultMsgDiv.classList.add('winner-message');
-                    matchStatusDiv.innerHTML = `<i class="fas fa-flag-checkered"></i> MAÇ BİTTİ! ${winnerName} KAZANDI! <i class="fas fa-flag-checkered"></i>`;
-                    matchCountDisplay.innerHTML = `<i class="fas fa-crown"></i> ŞAMPİYON ${winnerName} <i class="fas fa-crown"></i>`;
-                    addP1.disabled = true;
-                    addP2.disabled = true;
-                    startConfetti();
-                    updateButtonTexts();
-                    return;
-                }
-                
-                // 5 puana ulaşıldı mı? (Uzatma kontrolü)
-                if (totalPoints >= 5) {
-                    overtime = true;
-                    matchStatusDiv.innerHTML = `<i class="fas fa-hourglass-half"></i> UZATMA BAŞLADI! +2 PUAN SİSTEMİ! İlk farkı yaratan kazanır! <i class="fas fa-hourglass-half"></i>`;
-                    resultMsgDiv.innerHTML = `<i class="fas fa-exclamation-triangle"></i> UZATMA! Normal maçlar bitti (5 puan). Şimdi +2 puan sisteminde ilk farkı yaratan kazanır!`;
-                    updateButtonTexts();
-                    updateUI();
-                    return;
-                }
-                
-                // Normal maç devam ediyor
-                matchCountDisplay.innerHTML = `<i class="fas fa-chart-simple"></i> NORMAL MAÇ: ${totalPoints}/5`;
-                matchStatusDiv.innerHTML = `<i class="fas fa-clock"></i> SADECE 2-2'DEN 3-2 veya 5-0 ile kazanılır!`;
-                
-                let msg = "";
-                if (p1Score === p2Score) {
-                    msg = `⚖️ BERABERE! ${player1Name} ${p1Score} - ${p2Score} ${player2Name}`;
-                    if (p1Score === 2 && p2Score === 2) {
-                        msg += ` ⚡ SON HAMLE! 3-2 yaparsan KAZANIRSIN! ⚡`;
-                    }
-                } else if (p1Score > p2Score) {
-                    msg = `🔥 ${player1Name} ÖNDE! (${p1Score} - ${p2Score})`;
-                    if (p1Score === 3 && p2Score === 1) {
-                        msg += ` ⚠️ 3-1! 3-2 olursa BİTMEZ! Sadece 2-2'den 3-2 bitirir! ⚠️`;
-                    }
-                } else {
-                    msg = `😤 ${player2Name} ÖNDE! (${p1Score} - ${p2Score})`;
-                    if (p2Score === 3 && p1Score === 1) {
-                        msg += ` ⚠️ 3-1! 3-2 olursa BİTMEZ! Sadece 2-2'den 3-2 bitirir! ⚠️`;
-                    }
-                }
-                
-                if (totalPoints === 4 && p1Score !== p2Score) {
-                    msg += ` ⚡ SON MAÇ! Beraberlik olursa uzatma! ⚡`;
-                }
-                resultMsgDiv.innerHTML = `<i class="fas fa-futbol"></i> ${msg}`;
-                resultMsgDiv.classList.remove('winner-message');
-                updateButtonTexts();
-                return;
+        <div class="sys-controls">
+            <button class="icon-btn" id="undoBtn" onclick="undoLast()" title="Geri Al"><i class="fa-solid fa-rotate-left"></i></button>
+            <button class="icon-btn" onclick="resetMatch()" title="Sıfırla"><i class="fa-solid fa-power-off"></i></button>
+            <button class="icon-btn" onclick="window.location.href='index.html'" title="Çıkış" style="font-size:1.2rem;"><i class="fa-solid fa-arrow-right-from-bracket"></i></button>
+        </div>
+
+        <button class="drum-btn p2-add" id="add2" onclick="addScore(2)">
+            <div class="drum-base"></div>
+            <div class="drum-top">PUAN<br>AL</div>
+        </button>
+    </div>
+
+    <div class="modal" id="winnerModal">
+        <div class="modal-winner" id="winnerText">ŞAMPİYON</div>
+        <button class="modal-btn" onclick="resetMatch()"><i class="fa-solid fa-rotate"></i> YENİDEN KAPIŞ</button>
+        <button class="modal-btn secondary" onclick="undoWin()"><i class="fa-solid fa-xmark"></i> GERİ AL</button>
+    </div>
+
+    <script>
+        const fighter1 = localStorage.getItem('fighter1') || 'KIRMIZI';
+        const fighter2 = localStorage.getItem('fighter2') || 'MAVİ';
+        
+        document.getElementById('name1').textContent = fighter1;
+        document.getElementById('name2').textContent = fighter2;
+
+        let p1Score = 0; let p2Score = 0;
+        let gameOver = false;
+        let historyStates = [];
+
+        function updateUI() {
+            const s1El = document.getElementById('score1bg');
+            const s2El = document.getElementById('score2bg');
+            
+            s1El.textContent = p1Score;
+            s2El.textContent = p2Score;
+            
+            const bars1 = document.getElementById('bars1').children;
+            for(let i=0; i<6; i++) {
+                if(i < p1Score) bars1[i].classList.add('filled');
+                else bars1[i].classList.remove('filled');
             }
             
-            // UZATMA MODU: Fark oluştu mu kontrol et
-            if (overtime && !matchWinner) {
-                if (p1Score !== p2Score) {
-                    matchWinner = p1Score > p2Score ? 'p1' : 'p2';
-                    const winnerName = matchWinner === 'p1' ? player1Name : player2Name;
-                    resultMsgDiv.innerHTML = `<i class="fas fa-trophy"></i> 🎉🎉🎉 UZATMA SONUCU ${winnerName} KAZANDI!!! 🎉🎉🎉<br>🏆 ${p1Score} - ${p2Score} İLE ZAFER! 🏆`;
-                    resultMsgDiv.classList.add('winner-message');
-                    matchStatusDiv.innerHTML = `<i class="fas fa-flag-checkered"></i> UZATMA BİTTİ! ${winnerName} KAZANDI! <i class="fas fa-flag-checkered"></i>`;
-                    matchCountDisplay.innerHTML = `<i class="fas fa-crown"></i> UZATMA ŞAMPİYONU ${winnerName} <i class="fas fa-crown"></i>`;
-                    addP1.disabled = true;
-                    addP2.disabled = true;
-                    startConfetti();
-                    updateButtonTexts();
-                    return;
-                } else {
-                    matchStatusDiv.innerHTML = `<i class="fas fa-hourglass-half"></i> UZATMA DEVAM EDİYOR! (${p1Score}-${p2Score}) İlk farkı yaratan kazanır! +2 PUAN <i class="fas fa-hourglass-half"></i>`;
-                    resultMsgDiv.innerHTML = `<i class="fas fa-futbol"></i> UZATMA! Beraberlik bozulana kadar devam. Her hamle +2 puan!`;
-                    matchCountDisplay.innerHTML = `<i class="fas fa-chart-simple"></i> UZATMA SKORU: ${p1Score} - ${p2Score}`;
-                    resultMsgDiv.classList.remove('winner-message');
-                    updateButtonTexts();
-                    return;
-                }
+            const bars2 = document.getElementById('bars2').children;
+            for(let i=0; i<6; i++) {
+                if(i < p2Score) bars2[i].classList.add('filled');
+                else bars2[i].classList.remove('filled');
             }
+            
+            if (p1Score > p2Score) {
+                document.body.classList.add('lead-p1');
+                document.body.classList.remove('lead-p2');
+            } else if (p2Score > p1Score) {
+                document.body.classList.add('lead-p2');
+                document.body.classList.remove('lead-p1');
+            } else {
+                document.body.classList.remove('lead-p1', 'lead-p2');
+            }
+            
+            document.getElementById('add1').disabled = gameOver || p1Score >= 6;
+            document.getElementById('add2').disabled = gameOver || p2Score >= 6;
+            document.getElementById('undoBtn').disabled = (historyStates.length === 0 || gameOver);
         }
-        updateButtonTexts();
-    }
 
-    function addScore(player) {
-        if (matchWinner) return;
-        
-        // Önceki skoru kaydet (2-2 kontrolü için)
-        previousP1 = p1Score;
-        previousP2 = p2Score;
-        
-        const addAmount = overtime ? 2 : 1;
-        
-        if (player === 'p1') {
-            p1Score += addAmount;
-        } else {
-            p2Score += addAmount;
+        function triggerPop(player) {
+            const el = document.getElementById(player === 1 ? 'score1bg' : 'score2bg');
+            el.classList.add('pop');
+            setTimeout(() => el.classList.remove('pop'), 300);
         }
-        
+
+        function checkWinCondition(prev1, prev2, curr1, curr2) {
+            if (prev1 === 2 && prev2 === 2) {
+                if (curr1 === 3 && curr2 === 2) return 1;
+                if (curr2 === 3 && curr1 === 2) return 2;
+            }
+            if (curr1 === 5 && curr2 === 0) return 1;
+            if (curr2 === 5 && curr1 === 0) return 2;
+            if (prev1 === 5 && prev2 === 5) {
+                if (curr1 === 6) return 1;
+                if (curr2 === 6) return 2;
+            }
+            if (curr1 >= 6) return 1;
+            if (curr2 >= 6) return 2;
+            return 0;
+        }
+
+        function triggerWin(winnerIndex) {
+            gameOver = true;
+            const winnerName = winnerIndex === 1 ? fighter1 : fighter2;
+            const color = winnerIndex === 1 ? 'var(--red-glow)' : 'var(--blue-glow)';
+            
+            const text = document.getElementById('winnerText');
+            text.innerHTML = `<span style="color: ${color}">${winnerName}</span><br>KAZANDI`;
+            text.style.color = color;
+            
+            document.getElementById('winnerModal').classList.add('show');
+            fireConfetti(winnerIndex);
+            updateUI();
+        }
+
+        function addScore(player) {
+            if (gameOver) return;
+            historyStates.push({ p1: p1Score, p2: p2Score });
+
+            let prevP1 = p1Score; let prevP2 = p2Score;
+            if (player === 1 && p1Score < 6) p1Score++;
+            else if (player === 2 && p2Score < 6) p2Score++;
+
+            triggerPop(player);
+
+            let winner = checkWinCondition(prevP1, prevP2, p1Score, p2Score);
+            if (winner > 0) setTimeout(() => triggerWin(winner), 400); // delay win for pop effect
+            
+            updateUI();
+        }
+
+        function undoLast() {
+            if (historyStates.length === 0 || gameOver) return;
+            const state = historyStates.pop();
+            p1Score = state.p1; p2Score = state.p2;
+            updateUI();
+        }
+
+        function undoWin() {
+            document.getElementById('winnerModal').classList.remove('show');
+            gameOver = false;
+            if (historyStates.length > 0) {
+                const state = historyStates.pop();
+                p1Score = state.p1; p2Score = state.p2;
+            }
+            updateUI();
+        }
+
+        function resetMatch() {
+            p1Score = 0; p2Score = 0;
+            gameOver = false; historyStates = [];
+            document.getElementById('winnerModal').classList.remove('show');
+            updateUI();
+        }
+
+        function fireConfetti(winnerIndex) {
+            const colors = winnerIndex === 1 ? ['#ff0055', '#ffffff'] : ['#00f0ff', '#ffffff'];
+            var duration = 4 * 1000;
+            var end = Date.now() + duration;
+            (function frame() {
+              confetti({ particleCount: 5, angle: 60, spread: 55, origin: { x: 0 }, colors: colors });
+              confetti({ particleCount: 5, angle: 120, spread: 55, origin: { x: 1 }, colors: colors });
+              if (Date.now() < end) requestAnimationFrame(frame);
+            }());
+        }
+
         updateUI();
-    }
-
-    addP1.addEventListener('click', () => addScore('p1'));
-    addP2.addEventListener('click', () => addScore('p2'));
-
-    function resetMatch() {
-        p1Score = 0; p2Score = 0;
-        previousP1 = 0; previousP2 = 0;
-        matchWinner = null;
-        overtime = false;
-        addP1.disabled = false;
-        addP2.disabled = false;
-        resultMsgDiv.classList.remove('winner-message');
-        updateUI();
-        resultMsgDiv.innerHTML = `<i class="fas fa-play"></i> Maç sıfırlandı! Yeni mücadele başlıyor. SADECE 2-2'DEN 3-2 veya 5-0 ile kazanılır!`;
-        matchStatusDiv.innerHTML = `<i class="fas fa-clock"></i> SADECE 2-2'DEN 3-2 veya 5-0 ile kazanılır!`;
-        if (animationId) { cancelAnimationFrame(animationId); animationId = null; ctx.clearRect(0, 0, canvas.width, canvas.height); }
-        updateButtonTexts();
-    }
-
-    resetBtn.addEventListener('click', resetMatch);
-    backBtn.addEventListener('click', () => window.location.href = 'index.html');
-    
-    updateUI();
-    updateButtonTexts();
-</script>
+    </script>
 </body>
 </html>

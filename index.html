@@ -2,225 +2,147 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>🏆 KİM KAZANACAK | PREMIUM ARENA</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ULTIMATE WRESTLING - GİRİŞ</title>
+    <link href="https://fonts.googleapis.com/css2?family=Teko:wght@500;700&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        :root {
+            --red-glow: #ff0055;
+            --blue-glow: #00f0ff;
+            --bg-dark: #050508;
+            --accent: #ffd500;
         }
 
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
         body {
-            background: radial-gradient(ellipse at 20% 30%, #0f1225, #070a14);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
-            padding: 20px;
+            background-color: var(--bg-dark);
+            height: 100vh;
+            display: flex; justify-content: center; align-items: center;
+            font-family: 'Teko', sans-serif;
+            color: #fff;
+            overflow: hidden;
             position: relative;
         }
 
-        body::before {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="15" cy="15" r="1.2" fill="%23ffffff12"/><circle cx="85" cy="80" r="1.5" fill="%23ffffff08"/><circle cx="45" cy="55" r="1" fill="%23ffffff10"/></svg>');
-            pointer-events: none;
-        }
-
-        .container {
-            max-width: 650px;
-            width: 100%;
-            background: rgba(8, 14, 28, 0.75);
-            backdrop-filter: blur(20px);
-            border-radius: 72px;
-            border: 1px solid rgba(255, 215, 0, 0.35);
-            padding: 45px 35px;
-            box-shadow: 0 35px 60px rgba(0, 0, 0, 0.5);
-        }
-
-        .premium-header {
-            text-align: center;
-            margin-bottom: 45px;
-        }
-
-        .premium-header h1 {
-            font-family: 'Orbitron', monospace;
-            font-size: 2rem;
-            background: linear-gradient(135deg, #FFE6B0, #FFB347, #FF8C00);
-            background-clip: text;
-            -webkit-background-clip: text;
-            color: transparent;
-        }
-
-        .premium-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            background: rgba(255,200,0,0.15);
-            border-radius: 100px;
-            padding: 8px 24px;
-            font-size: 0.75rem;
-            color: #FFE5A3;
-            margin-top: 15px;
-        }
-
-        .player-card {
-            background: rgba(5, 10, 22, 0.7);
-            border-radius: 56px;
-            padding: 28px;
-            margin-bottom: 28px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: 0.3s;
-        }
-
-        .player-card:hover {
-            border-color: rgba(255, 200, 100, 0.4);
-            background: rgba(10, 18, 35, 0.8);
-        }
-
-        .player-icon {
-            font-size: 1.8rem;
-            margin-bottom: 12px;
+        /* Diagonal Split Background */
+        .split-bg {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
             display: flex;
-            align-items: center;
-            gap: 12px;
+        }
+        .bg-half { flex: 1; height: 100%; position: relative; }
+        .bg-red { 
+            background: linear-gradient(135deg, rgba(255,0,85,0.15) 0%, transparent 80%);
+            clip-path: polygon(0 0, 100% 0, 80% 100%, 0% 100%);
+        }
+        .bg-blue { 
+            background: linear-gradient(-45deg, rgba(0,240,255,0.15) 0%, transparent 80%);
+            margin-left: -20%;
         }
 
-        .player-icon i {
-            background: linear-gradient(135deg, #FFD966, #FF9F4A);
-            background-clip: text;
+        .login-box {
+            background: rgba(10, 10, 15, 0.9);
+            border: 2px solid #222;
+            padding: 50px;
+            width: 90%; max-width: 500px;
+            text-align: center;
+            box-shadow: 0 0 50px rgba(0,0,0,0.8);
+            transform: skewX(-5deg);
+        }
+
+        .title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3.5rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            background: linear-gradient(to right, var(--red-glow), var(--blue-glow));
             -webkit-background-clip: text;
-            color: transparent;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 40px;
+            text-shadow: 0 0 20px rgba(255,255,255,0.1);
         }
 
-        .player-icon span {
-            font-size: 1rem;
-            font-weight: 600;
-            color: #FFD966;
+        .input-group {
+            margin-bottom: 25px;
+            text-align: left;
+            transform: skewX(5deg);
         }
 
-        .player-label {
-            font-weight: 600;
-            color: #B8C7FF;
-            margin-bottom: 15px;
-            font-size: 0.75rem;
-            letter-spacing: 1.5px;
+        .input-group label {
+            display: block; font-size: 1.5rem; letter-spacing: 2px;
+            margin-bottom: 5px; color: #aaa;
         }
 
-        input {
-            width: 100%;
-            background: #0C1122;
-            border: 2px solid rgba(255, 200, 100, 0.4);
-            border-radius: 60px;
-            padding: 16px 22px;
-            font-size: 1rem;
-            font-weight: 500;
-            color: #F5F0E0;
-            outline: none;
-            font-family: 'Inter', monospace;
+        .p1-label { color: var(--red-glow) !important; text-shadow: 0 0 10px rgba(255,0,85,0.5); }
+        .p2-label { color: var(--blue-glow) !important; text-shadow: 0 0 10px rgba(0,240,255,0.5); }
+
+        .input-group input {
+            width: 100%; padding: 15px 20px;
+            background: rgba(0,0,0,0.5);
+            border: 2px solid #333;
+            color: #fff; font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem; font-weight: 700;
+            outline: none; transition: all 0.3s;
         }
 
-        input:focus {
-            border-color: #FFB347;
-            box-shadow: 0 0 0 4px rgba(255, 180, 70, 0.2);
-        }
+        .input-group input:focus { border-color: #fff; box-shadow: 0 0 15px rgba(255,255,255,0.2); }
 
-        .premium-btn {
-            background: linear-gradient(95deg, #F7B42C, #FC575E);
+        .start-btn {
+            width: 100%; padding: 20px; margin-top: 20px;
+            background: #fff; color: #000;
             border: none;
-            padding: 16px 24px;
-            border-radius: 100px;
-            font-weight: 800;
-            font-size: 1.1rem;
-            color: #0A0E1C;
-            width: 100%;
-            cursor: pointer;
-            transition: 0.2s;
-            margin-top: 20px;
-            font-family: 'Orbitron', monospace;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem; font-weight: 900;
+            text-transform: uppercase; cursor: pointer;
+            transition: all 0.2s;
+            transform: skewX(5deg);
         }
 
-        .premium-btn:active {
-            transform: scale(0.97);
-        }
+        .start-btn:hover { background: var(--accent); box-shadow: 0 0 30px var(--accent); }
+        .start-btn:active { transform: skewX(5deg) scale(0.95); }
 
-        .info-text {
-            text-align: center;
-            margin-top: 25px;
-            color: #FFD966AA;
-            font-size: 0.75rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-
-        @media (max-width: 550px) {
-            .container { padding: 30px 20px; }
-            .premium-header h1 { font-size: 1.4rem; }
-            .player-card { padding: 20px; }
-        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="premium-header">
-            <h1><i class="fas fa-crown"></i> KİM KAZANACAK <i class="fas fa-fire"></i></h1>
-            <div class="premium-badge">
-                <i class="fas fa-gamepad"></i> 3-2 veya 5-0 ile ZAFER <i class="fas fa-chart-line"></i>
+    <div class="split-bg">
+        <div class="bg-half bg-red"></div>
+        <div class="bg-half bg-blue"></div>
+    </div>
+    
+    <div class="login-box">
+        <div class="title">KAPIŞMA</div>
+        <form id="namesForm">
+            <div class="input-group">
+                <label class="p1-label">KIRMIZI KÖŞE</label>
+                <input type="text" id="p1Name" placeholder="1. SAVAŞÇI" required>
             </div>
-        </div>
-
-        <div class="player-card">
-            <div class="player-icon">
-                <i class="fas fa-user"></i>
-                <span>1. SAVAŞÇI</span>
+            
+            <div class="input-group">
+                <label class="p2-label">MAVİ KÖŞE</label>
+                <input type="text" id="p2Name" placeholder="2. SAVAŞÇI" required>
             </div>
-            <div class="player-label"><i class="fas fa-tag"></i> İSİM</div>
-            <input type="text" id="player1Name" placeholder="Örnek: KAAN, ALİ..." value="KAAN">
-        </div>
 
-        <div class="player-card">
-            <div class="player-icon">
-                <i class="fas fa-user-friends"></i>
-                <span>2. SAVAŞÇI</span>
-            </div>
-            <div class="player-label"><i class="fas fa-tag"></i> İSİM</div>
-            <input type="text" id="player2Name" placeholder="Örnek: ELISA, ZEYNEP..." value="ELISA">
-        </div>
-
-        <button class="premium-btn" id="startMatchBtn">
-            <i class="fas fa-fist-raised"></i> ARENAYA GİR <i class="fas fa-arrow-right"></i>
-        </button>
-        <div class="info-text">
-            <i class="fas fa-info-circle"></i> SADECE 3-2 veya 5-0 ile KAZANILIR! Diğer skorlarda UZATMA (+2 puan)
-        </div>
+            <button type="submit" class="start-btn">OYUNA GİRİŞ</button>
+        </form>
     </div>
 
     <script>
-        const startBtn = document.getElementById('startMatchBtn');
-        const p1Input = document.getElementById('player1Name');
-        const p2Input = document.getElementById('player2Name');
-
-        startBtn.addEventListener('click', () => {
-            let p1 = p1Input.value.trim();
-            let p2 = p2Input.value.trim();
-            if (p1 === "") p1 = "KAAN";
-            if (p2 === "") p2 = "ELISA";
-            localStorage.setItem('player1Name', p1);
-            localStorage.setItem('player2Name', p2);
-            window.location.href = 'skor.html';
+        document.getElementById('namesForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const p1 = document.getElementById('p1Name').value.trim();
+            const p2 = document.getElementById('p2Name').value.trim();
+            if(p1 && p2) {
+                localStorage.setItem('fighter1', p1);
+                localStorage.setItem('fighter2', p2);
+                window.location.href = 'skor.html';
+            }
         });
+        const oldP1 = localStorage.getItem('fighter1');
+        const oldP2 = localStorage.getItem('fighter2');
+        if(oldP1) document.getElementById('p1Name').value = oldP1;
+        if(oldP2) document.getElementById('p2Name').value = oldP2;
     </script>
 </body>
 </html>
